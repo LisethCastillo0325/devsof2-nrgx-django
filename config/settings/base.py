@@ -37,6 +37,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'users.User'
+
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +51,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
+    'django_api.users.apps.UsersAppConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
