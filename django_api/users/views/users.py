@@ -13,7 +13,10 @@ from django_api.users.models import User
 from django_api.users import serializers
 
 
-class UserViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class UserViewSet(mixins.ListModelMixin, 
+                  mixins.CreateModelMixin,
+                  mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet):
 
     queryset = User.objects.all()
     serializer_class = serializers.UserModelSerializer
@@ -38,3 +41,24 @@ class UserViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             'token': token
         }
         return Response(data, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.UpdateAndCreateUserSerializer(
+            data=request.data
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = serializers.UserModelSerializer(instance=user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = serializers.UpdateAndCreateUserSerializer(
+            instance=user,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = serializers.UserModelSerializer(instance=user).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
