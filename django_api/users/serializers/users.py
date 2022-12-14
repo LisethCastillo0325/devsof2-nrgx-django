@@ -23,6 +23,8 @@ from django_api.utils.custom_regex_validators import CellNumberRegexValidator
 class UserModelSerializer(serializers.ModelSerializer):
 
     identification_type = DataChoiceSerializer()
+    first_name = serializers.CharField(max_length=150)
+    last_name = serializers.CharField(max_length=150)
 
     class Meta:
         model = User
@@ -66,6 +68,20 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'access': str(token.access_token)
         }
         return self.context['user'], token
+
+
+class UserTokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField(
+        help_text="Token de mayor duración que puede ser usado para obtener un nuevo token de acceso."
+    )
+    access = serializers.CharField(
+        help_text="Token de acceso que debe ser enviado en la cabecera de todas las demás API's."
+    )
+
+
+class UserLoginSerializer(serializers.Serializer):
+    user = UserModelSerializer()
+    token = UserTokenSerializer()
 
 
 class UpdateAndCreateUserSerializer(serializers.ModelSerializer):
