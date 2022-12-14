@@ -42,7 +42,7 @@ class User(DateBaseModel, AbstractUser):
         'client',
         default=False,
         help_text=(
-            'Help easily distinguis users and perform queries.'
+            'Ayuda a distinguir de forma rápida si un usuario es un cliente.'
         )
     )
     username = None

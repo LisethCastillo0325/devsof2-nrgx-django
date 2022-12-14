@@ -15,12 +15,12 @@ class DateBaseModel(models.Model):
     created = models.DateTimeField(
         'created at',
         auto_now_add=True,
-        help_text="Date time on which the object was created."
+        help_text="Fecha en la cual fue creado."
     )
     updated = models.DateTimeField(
         'updated at',
         auto_now=True,
-        help_text="Date time on wich the object was last updated."
+        help_text="Fecha en la que fue actualizdo por últimavez."
     )
 
     class Meta:

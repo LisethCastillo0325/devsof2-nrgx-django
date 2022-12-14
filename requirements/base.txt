@@ -8,3 +8,7 @@ django-cors-headers==3.13.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 PyJWT==2.6.0
+
+
+# documentation
+drf-yasg==1.21.4
