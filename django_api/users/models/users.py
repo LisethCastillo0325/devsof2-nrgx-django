@@ -45,12 +45,12 @@ class User(DateBaseModel, AbstractUser):
             'Help easily distinguis users and perform queries.'
         )
     )
+    username = None
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'first_name', 
         'last_name', 
-        'username',
         'identification_number', 
         'identification_type'
     ]
