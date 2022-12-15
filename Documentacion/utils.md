@@ -25,6 +25,12 @@ Crear super usuario
 
     docker-compose run --rm django python manage.py createsuperuser
 
+Crear migraciones
+
+    docker-compose run --rm django python manage.py makemigrations
+
+    docker-compose run --rm django python manage.py migrate
+
 # Entornos virtuales
 
 Crear entorno vitual
