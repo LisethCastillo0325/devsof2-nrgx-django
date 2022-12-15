@@ -1,6 +1,6 @@
 # PostgreSQL
-POSTGRES_HOST=ec2-3-208-79-113.compute-1.amazonaws.com
+POSTGRES_HOST=database-nrgx.cg7vh3amholp.us-east-2.rds.amazonaws.com
 POSTGRES_PORT=5432
-POSTGRES_DB=dbim0ntc6961po
-POSTGRES_USER=anhnqpadseuupu
-POSTGRES_PASSWORD=3f23ab24a89e9174e6971645f93b79db83fb163a9ccb015f00c7b981bef63331
+POSTGRES_DB=nrgx_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=123456789
