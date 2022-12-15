@@ -51,7 +51,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'drf_yasg'
 ]
 LOCAL_APPS = [
     'django_api.users.apps.UsersAppConfig'
