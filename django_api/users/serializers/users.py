@@ -8,6 +8,7 @@ from django.contrib.auth.signals import user_logged_in
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 # Models
 from django_api.users.models import User
@@ -77,6 +78,24 @@ class UserTokenSerializer(serializers.Serializer):
     access = serializers.CharField(
         help_text="Token de acceso que debe ser enviado en la cabecera de todas las demás API's."
     )
+
+
+class RefreshTokenSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    default_error_messages = {
+        'bad_token': 'Token is invalid or expired'
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except TokenError:
+            self.fail('bad_token')
 
 
 class UserLoginSerializer(serializers.Serializer):
