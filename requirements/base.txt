@@ -2,8 +2,13 @@ Django==4.1.3
 psycopg2==2.9.5
 django-environ==0.9.0
 django-extensions>=3.2.1
+django-cors-headers==3.13.0
 
 # restframework
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 PyJWT==2.6.0
+
+
+# documentation
+drf-yasg==1.21.4
