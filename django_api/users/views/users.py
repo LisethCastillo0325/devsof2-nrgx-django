@@ -8,6 +8,9 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+# JWT
+from rest_framework_simplejwt.tokens import RefreshToken
+
 # Swagger
 from drf_yasg.utils import swagger_auto_schema
 
@@ -93,7 +96,7 @@ class UserViewSet(mixins.ListModelMixin,
 
     @swagger_auto_schema(responses={200: serializers.UserLoginSerializer(many=False)})
     @action(detail=False, methods=['post'])
-    def login(self, request, pk=None):
+    def login(self, request):
         """ Autenticar usuarios.
 
             - Permite autenticar un usuario por medio de email y contraseña.
@@ -107,3 +110,15 @@ class UserViewSet(mixins.ListModelMixin,
         user, token = serializer.save()
         data = serializers.UserLoginSerializer(instance={'user': user, 'token': token}).data
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def logout(self, request):
+        """ Inhabilitar token de acceso a usuarios.
+
+            - Permite inhabilitar el token de acceso del usuario.
+            - Este endpoint no retorna información.
+        """
+        serializer = serializers.RefreshTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
