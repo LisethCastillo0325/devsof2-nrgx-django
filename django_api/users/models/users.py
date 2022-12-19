@@ -42,15 +42,15 @@ class User(DateBaseModel, AbstractUser):
         'client',
         default=False,
         help_text=(
-            'Help easily distinguis users and perform queries.'
+            'Ayuda a distinguir de forma rápida si un usuario es un cliente.'
         )
     )
+    username = None
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'first_name', 
         'last_name', 
-        'username',
         'identification_number', 
         'identification_type'
     ]

@@ -1,10 +1,13 @@
 """Development settings."""
 
+from datetime import timedelta
 from .base import *  # NOQA
 from .base import env
 
 # Base
 DEBUG = True
+
+PRODUCTION = False
 
 # Security
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='django-insecure-tyx*dern6%a(xr&agj#31a&e=^@8q9dr-f)qm^t58*@$dh9hc$')
@@ -32,3 +35,16 @@ EMAIL_PORT = 1025
 
 # django-extensions
 INSTALLED_APPS += ['django_extensions']  # noqa F405
+
+# JWT
+# ------------------------------------------------------------------------------
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
+
+# URL FRONTEND
+# ------------------------------------------------------------------------------
+URL_FRONTEND = 'http://localhost:3000'
