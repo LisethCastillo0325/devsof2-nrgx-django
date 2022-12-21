@@ -13,14 +13,9 @@ class Factura(DateBaseModel):
     Extend from Django's Abstract User, change the username field
     to email and add some extra fields.
     """
-    estado = models.BooleanField(
-        'Estado',
-        default=True,
-        help_text=(
-            'Ayuda a saber si la factura esta activa o inactiva'
-        )
-    
-    )
+    class Estado(models.TextChoices):
+        Pagado=1, ('La factura esta al dia')
+        Pendiente= 2, ('La factura aun esta pendiente')
 
     fecha_expedicion= models.DateField(
         'Fecha de expedcion'
