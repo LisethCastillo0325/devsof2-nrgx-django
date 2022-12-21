@@ -3,10 +3,21 @@
 # Django
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 # Utilities
 from django_api.utils.models import DateBaseModel
+
+class MyUserManager(BaseUserManager):
+    """
+        Manager encargado de la creacion de super usuarios.
+    """
+
+    def create_superuser(self, email, password, **kwargs):
+        user = self.model(email=email, is_staff=True, is_superuser=True, **kwargs)
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class User(DateBaseModel, AbstractUser):
@@ -46,6 +57,8 @@ class User(DateBaseModel, AbstractUser):
         )
     )
     username = None
+
+    objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
