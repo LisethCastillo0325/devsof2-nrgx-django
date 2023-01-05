@@ -22,7 +22,7 @@ class Servicios(DateBaseModel):
     porcentaje_recargo_mora = models.FloatField('Porcentaje de recargo por mora')
 
     def __str__(self):
-        return "Servicio {}".format(self.id)
+        return "Servicio ID: {} Nombre: {}".format(self.id, self.nombre)
 
     class Meta(DateBaseModel.Meta):
         db_table = 'servicios'

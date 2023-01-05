@@ -61,4 +61,4 @@ class DetalleFactura(DateBaseModel):
         db_table = 'detalle_factura'
         managed = True
         verbose_name = 'detalle_factura'
-        verbose_name_plural = 'detalles_facturas'
+        verbose_name_plural = 'detalles de factura'
