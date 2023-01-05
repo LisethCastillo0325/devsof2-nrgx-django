@@ -4,11 +4,14 @@ django-environ==0.9.0
 django-extensions>=3.2.1
 django-cors-headers==3.13.0
 
+#Djanfo filter
+django-filter==21.1
+djangorestframework-filters==1.0.0.dev2
+
 # restframework
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 PyJWT==2.6.0
-
 
 # documentation
 drf-yasg==1.21.4

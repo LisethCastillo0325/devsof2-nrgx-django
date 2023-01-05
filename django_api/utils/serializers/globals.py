@@ -26,5 +26,5 @@ class DataSerializer(serializers.BaseSerializer):
     def to_representation(self, instance):
         return {
             'value': instance.pk,
-            'label': instance.name
+            'label': instance.nombre
         }
