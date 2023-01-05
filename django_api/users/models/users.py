@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 # Utilities
 from django_api.utils.models import DateBaseModel
 
+
 class MyUserManager(BaseUserManager):
     """
         Manager encargado de la creacion de super usuarios.
@@ -22,7 +23,7 @@ class MyUserManager(BaseUserManager):
 
 class User(DateBaseModel, AbstractUser):
     """User model.
-    
+
     Extend from Django's Abstract User, change the username field
     to email and add some extra fields.
     """
