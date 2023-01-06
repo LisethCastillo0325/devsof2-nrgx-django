@@ -11,10 +11,12 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file:
-      - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
     ports:
-      - "0.0.0.0:8000:8000"
+      - "8000:8000"
+      - "587:587"
+      - "25:25"
     command: /start
 
   # redis:
