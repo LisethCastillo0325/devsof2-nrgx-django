@@ -1,0 +1,34 @@
+""" Reporte clientes serializer """
+
+# Django REST Framework
+from rest_framework import serializers
+
+# Models
+from django_api.facturas.models import Facturas
+from django_api.users.models.users import User
+from django_api.contratos.models.contratos import Contratos
+
+# Serializers
+from django_api.contratos.serializers.contratos import ContratosSerializer
+from django_api.utils.serializers import  DataChoiceSerializer
+
+# Filters
+from django_api.facturas.filter import FaturasFilter
+
+
+class ReporteFacturasClientesSerializer(serializers.ModelSerializer):
+    contrato = ContratosSerializer()
+    estado = DataChoiceSerializer()
+    
+    class Meta:
+        model = Facturas
+        fields = [
+            'id', 'contrato', 'valor_pendiente_pago', 'estado', 
+            'is_recargo', 'porcentaje_recargo', 'valor_recargo', 'total_a_pagar'
+        ]
+
+class FiltrosReporteFacturasClientesSerializer(serializers.Serializer):
+    created__gte = serializers.DateField(required=False)
+    created__lte = serializers.DateField(required=False)
+    clientes = serializers.CharField(required=False)
+    contratos = serializers.CharField(required=False)
