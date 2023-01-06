@@ -17,7 +17,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "3.20.82.253",
     "nrgxunivalle.netlify.app",
-    "api.nrgx.tortascrispan.com"
+    "nrgx.tortascrispan.com"
 ]
 
 # Cache
