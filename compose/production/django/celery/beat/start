@@ -4,4 +4,4 @@ set -o errexit
 set -o nounset
 
 
-celery -A cride.taskapp beat -l INFO
+celery -A django_api.taskapp beat -l INFO
