@@ -15,3 +15,6 @@ PyJWT==2.6.0
 
 # documentation
 drf-yasg==1.21.4
+
+# Async
+uvicorn[standard]==0.19.0
