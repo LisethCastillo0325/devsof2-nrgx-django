@@ -4,10 +4,9 @@ services:
   django: &django
     build:
       context: .
-      dockerfile: ./compose/local/django/Dockerfile
-    image: devsof_local_django
+      dockerfile: ./compose/production/django/Dockerfile
+    image: devsof_production_django
     volumes:
-      - .:/app
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
     env_file:
@@ -15,8 +14,6 @@ services:
       - ./.envs/.production/.postgres
     ports:
       - "8000:8000"
-      - "587:587"
-      - "25:25"
     command: /start
 
   # redis:
@@ -30,7 +27,7 @@ services:
 
   # celeryworker:
   #   <<: *django
-  #   image: devsof_local_celeryworker
+  #   image: devsof_production_celeryworker
   #   depends_on:
   #     - redis
   #   ports: []
@@ -38,7 +35,7 @@ services:
 
   # celerybeat:
   #   <<: *django
-  #   image: devsof_local_celerybeat
+  #   image: devsof_production_celerybeat
   #   depends_on:
   #     - redis
   #   ports: []
@@ -46,7 +43,7 @@ services:
 
   # flower:
   #   <<: *django
-  #   image: devsof_local_flower
+  #   image: devsof_production_flower
   #   ports:
   #     - "5555:5555"
   #   command: /start-flower
