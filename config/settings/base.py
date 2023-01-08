@@ -120,7 +120,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DATABASES = {
     'default': env.db('DATABASE_URL'),
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['ATOMIC_REQUESTS'] = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
