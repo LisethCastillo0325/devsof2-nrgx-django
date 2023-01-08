@@ -28,7 +28,8 @@ class ServicioModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicio
         fields = [
-            '__all__'
+            'id','nombre','descripcion','created','update','unidad_medida',
+            'valor_unitario','dia_de_corte','porcentaje_recargo_mora','groups'
         ]
 
 """serializer dia de corte"""   
@@ -46,6 +47,7 @@ class ServicioModelSerializer(serializers.ModelSerializer):
     
     def create(self,validate_data):
         return self(**validate_data)"""
+
 
 class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     """
