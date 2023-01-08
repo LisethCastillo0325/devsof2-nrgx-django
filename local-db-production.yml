@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: devsof_production_django
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres-local
+    ports:
+      - "8000:8000"
+    command: /start
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: ./compose/local/postgres/Dockerfile
+    image: devsof_production_db
+    restart: always
+    env_file:
+      - ./.envs/.production/.postgres-local
+    volumes: 
+      - ../db-data-prod:/var/lib/postgresql/data
+
+  # redis:
+  #   image: "redis:latest"
+  #   sysctls:
+  #     net.core.somaxconn: '511'
+  #   volumes:
+  #     - "/etc/localtime:/etc/localtime:ro"
+  #     - "/etc/timezone:/etc/timezone:ro"
+  #     - ./redis.conf:/usr/local/etc/redis/redis.conf
+
+  # celeryworker:
+  #   <<: *django
+  #   image: devsof_production_celeryworker
+  #   depends_on:
+  #     - redis
+  #   ports: []
+  #   command: /start-celeryworker
+
+  # celerybeat:
+  #   <<: *django
+  #   image: devsof_production_celerybeat
+  #   depends_on:
+  #     - redis
+  #   ports: []
+  #   command: /start-celerybeat
+
+  # flower:
+  #   <<: *django
+  #   image: devsof_production_flower
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
