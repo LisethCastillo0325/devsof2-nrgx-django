@@ -34,12 +34,18 @@ class ServicioViewSet(mixins.ListModelMixin,
 
     queryset = Servicio.objects.all()
 
+    serializer_class = serializers.ServicioModelSerializer
+
     def list(self, request, *args, **kwargs):
-        """ Listar usuarios
+        """ Listar servicios
 
             Permite listar todos los servicios registrados en el sistema.
         """
         return super().list(request, *args, **kwargs)
+
+        """list representa get usando queryset
+            retrieve obtiene 1 
+            create usar el serializer"""
 
     def retrieve(self, request, *args, **kwargs):
         """ Consultar servicio por ID

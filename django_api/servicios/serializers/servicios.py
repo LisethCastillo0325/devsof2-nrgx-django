@@ -11,7 +11,7 @@ from rest_framework.validators import UniqueValidator
 #from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 # Models
-from django_api.servicios.models import Servicio
+from django_api.servicios.models.servicios import Servicios
 from django.contrib.auth.models import Group
 
 # Utils
@@ -22,32 +22,13 @@ from django.utils import timezone
 
 
 class ServicioModelSerializer(serializers.ModelSerializer):
-    nombre= serializers.CharField()
-    descripcion= serializers.CharField()
-
+    unidad_medida=DataChoiceSerializer()
     class Meta:
-        model = Servicio
+        model = Servicios
         fields = [
             'id','nombre','descripcion','created','update','unidad_medida',
-            'valor_unitario','dia_de_corte','porcentaje_recargo_mora','groups'
+            'valor_unitario','dia_de_corte','porcentaje_recargo_mora'
         ]
-
-"""serializer dia de corte"""   
-
-"""class dia_de_corte(serializers.Serializer):
-
-    dia_de_corte= serializers.IntegerField()
-
-    def validate(self, data):
-        dia_de_corte = authenticate(dia_de_corte=data['Dia de corte'])
-        if not dia_de_corte:
-            raise serializers.ValidationError({'detail': 'Campo vacio'})
-        self.context['dia de corte'] = dia_de_corte
-        return super().validate(data)
-    
-    def create(self,validate_data):
-        return self(**validate_data)"""
-
 
 class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     """
@@ -55,22 +36,18 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     """
     nombre = serializers.CharField(max_length=150)
     descripcion = serializers.CharField(max_length=150)
+    dia_de_corte= serializers.IntegerField()
 
     unidad_medida = serializers.ChoiceField(
-        choices=Servicio.UnidadMedidaChoices.choices
+        choices=Servicios.UnidadMedidaChoices.choices
     )
-    valor_unitario = serializers.FloatField(required=False)
-    porcentaje_recargo_mora = serializers.FloatField(min_length=6, max_length=30, required=False)
+    valor_unitario = serializers.FloatField()
+    porcentaje_recargo_mora = serializers.FloatField()
     
-    # Relación m2m con la tabla de grupos, conocida tambien como "rol"
-    groups = serializers.PrimaryKeyRelatedField(
-        queryset=Group.objects.all(),
-        many=True
-    )
 
     class Meta:
         """Meta class."""
-        model = Servicio
+        model = Servicios
         fields = '__all__'
 
     """def dia_de_corte_validate(self, dia_de_corte):
@@ -81,24 +58,13 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
         """
         Crear servicios
         """
-        groups_data = data.pop('groups')
-        data['dia_de_corte'] = str(data.get('dia_de_corte', data['']))
-        servicios = Servicio.objects.create(**data)
-        servicios.set_dia_de_corte(data['dia_de_corte'])
-        servicios.save()
-        for group in groups_data:
-            servicios.groups.add(group)
-        return Servicio
+        servicios = Servicios.objects.create(**data)
+        return servicios
 
     def update(self, instance, data):
         servicios = super().update(instance=instance, validated_data=data)
-        try:
-            servicios.set_dia_de_corte(data['dia_de_corte'])
-            servicios.dia_de_corte_change_date = timezone.now()
-            servicios.save()
-        except KeyError:
-            pass
-        return Servicio
+        
+        return servicios
 
 
 
