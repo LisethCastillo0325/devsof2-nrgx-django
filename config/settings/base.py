@@ -13,12 +13,16 @@ import environ
 import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('django_api')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = '/static/'
 
 env = environ.Env()
 
@@ -95,7 +99,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [str(APPS_DIR.path('templates'))],
         'OPTIONS': {
             'debug': DEBUG,
             'loaders': [
@@ -160,11 +164,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

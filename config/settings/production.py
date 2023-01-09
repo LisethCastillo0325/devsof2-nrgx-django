@@ -44,7 +44,8 @@ X_FRAME_OPTIONS = "DENY"
 # Storages
 
 # Static  files
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = 'app/static/'
 
 # Media
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -78,7 +79,7 @@ ADMIN_URL = env('DJANGO_ADMIN_URL')
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
 # WhiteNoise
-# MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 
 
 # Logging
