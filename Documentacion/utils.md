@@ -31,6 +31,12 @@ Crear migraciones
 
     docker-compose run --rm django python manage.py migrate
 
+### En el ambiente Producción
+
+Copiar o actualizar archivos estaticos
+
+docker-compose -f local-db-production.yml run --rm django python manage.py collectstatic
+
 # Entornos virtuales
 
 Crear entorno vitual

@@ -32,7 +32,23 @@ class UserModelSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'first_name', 'last_name', 'is_active', 'created', 'updated',
             'email', 'identification_number', 'identification_type', 'birth_date',
-            'phone_number', 'is_client', 'groups', 'user_permissions'
+            'phone_number', 'is_client', 'groups'
+        ]
+
+
+class ClienteModelSerializer(serializers.ModelSerializer):
+    identification_type = DataChoiceSerializer()
+    full_name = serializers.SerializerMethodField()
+
+    def get_full_name(self, obj):
+        return "{} {}".format(obj.first_name, obj.last_name)
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'full_name', 'is_active', 'created', 'updated',
+            'email', 'identification_number', 'identification_type', 'birth_date',
+            'phone_number'
         ]
 
 
