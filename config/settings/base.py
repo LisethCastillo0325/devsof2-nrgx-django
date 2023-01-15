@@ -10,13 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import environ
+import os
 from pathlib import Path
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('django_api')
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = '/static/'
 
 env = environ.Env()
 
@@ -46,6 +52,8 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
+    'rest_framework_filters'
 ]
 
 THIRD_PARTY_APPS = [
@@ -56,14 +64,22 @@ THIRD_PARTY_APPS = [
     'drf_yasg'
 ]
 LOCAL_APPS = [
-    'django_api.users.apps.UsersAppConfig'
+    'django_api.users.apps.UsersAppConfig',
+    'django_api.utils.apps.UtilsAppConfig',
+    'django_api.servicios.apps.ServicioAppConfig',
+    'django_api.contratos.apps.ContratoAppConfig',
+    'django_api.facturas.apps.FacturaAppConfig',
+    'django_api.reportes.apps.ReportesAppConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 MIDDLEWARE = [
@@ -83,13 +99,21 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [str(APPS_DIR.path('templates'))],
         'OPTIONS': {
+            'debug': DEBUG,
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -108,7 +132,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 DATABASES = {
     'default': env.db('DATABASE_URL'),
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+DATABASES['default']['ATOMIC_REQUESTS'] = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -140,11 +164,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

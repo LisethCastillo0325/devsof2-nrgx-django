@@ -1,6 +1,7 @@
 """Views user."""
 # Django
 from django.utils.decorators import method_decorator
+from django.db import transaction
 
 # Django REST Framework
 from rest_framework import viewsets, mixins, status
@@ -28,6 +29,7 @@ class UserViewSet(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.RetrieveModelMixin,
+                  mixins.DestroyModelMixin,
                   viewsets.GenericViewSet):
 
     """
@@ -64,6 +66,7 @@ class UserViewSet(mixins.ListModelMixin,
         """
         return super().retrieve(request, *args, **kwargs)
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         """ Crear usuarios
 
@@ -77,6 +80,7 @@ class UserViewSet(mixins.ListModelMixin,
         data = self.get_serializer(instance=user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
+    @transaction.atomic
     def update(self, request, *args, **kwargs):
         """ Actualizar usuarios
         
@@ -93,6 +97,10 @@ class UserViewSet(mixins.ListModelMixin,
         data = self.get_serializer(instance=user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
+    def perform_destroy(self, instance):
+        """Disable membership."""
+        instance.is_active = False
+        instance.save()
 
     @swagger_auto_schema(responses={200: serializers.UserLoginSerializer(many=False)})
     @action(detail=False, methods=['post'])
