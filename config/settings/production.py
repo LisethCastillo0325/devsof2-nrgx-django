@@ -13,21 +13,19 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[
 PRODUCTION = True
 
 # Databases
-DATABASES['default'] = env.db('DATABASE_URL')  # NOQA
-DATABASES['default']['ATOMIC_REQUESTS'] = True  # NOQA
 DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # NOQA
 
-# Cache
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env('REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'IGNORE_EXCEPTIONS': True,
-        }
-    }
-}
+# # Cache
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': env('REDIS_URL'),
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#             'IGNORE_EXCEPTIONS': True,
+#         }
+#     }
+# }
 
 # Security
 SESSION_COOKIE_HTTPONLY = True
@@ -46,7 +44,8 @@ X_FRAME_OPTIONS = "DENY"
 # Storages
 
 # Static  files
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_URL = 'app/static/'
 
 # Media
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
@@ -80,7 +79,7 @@ ADMIN_URL = env('DJANGO_ADMIN_URL')
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
 # WhiteNoise
-# MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 
 
 # Logging

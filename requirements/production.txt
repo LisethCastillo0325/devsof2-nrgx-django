@@ -3,3 +3,6 @@
 -r ./base.txt
 
 gunicorn==20.1.0
+
+# static files
+whitenoise==6.2.0
