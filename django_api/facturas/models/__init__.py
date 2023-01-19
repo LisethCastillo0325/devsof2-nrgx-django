@@ -1,1 +1,1 @@
-from .facturas import Facturas
+from .facturas import Facturas, DetalleFactura

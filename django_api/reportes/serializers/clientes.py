@@ -5,15 +5,10 @@ from rest_framework import serializers
 
 # Models
 from django_api.facturas.models import Facturas
-from django_api.users.models.users import User
-from django_api.contratos.models.contratos import Contratos
 
 # Serializers
 from django_api.contratos.serializers.contratos import ContratosSerializer
 from django_api.utils.serializers import  DataChoiceSerializer
-
-# Filters
-from django_api.facturas.filter import FaturasFilter
 
 
 class ReporteFacturasClientesSerializer(serializers.ModelSerializer):
