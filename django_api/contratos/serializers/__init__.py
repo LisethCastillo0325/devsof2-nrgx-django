@@ -1,1 +1,1 @@
-from .contratos import ContratosSerializer
+from .contratos import ContratosSerializer, ContratosModelSerializer, UpdateAndCreatedContratoSerializer
