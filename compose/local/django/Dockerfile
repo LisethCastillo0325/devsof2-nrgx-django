@@ -1,6 +1,8 @@
-FROM python:3.8
+FROM python:3.9-buster
 
 ENV PYTHONUNBUFFERED 1
+
+ENV XDG_RUNTIME_DIR=/tmp
 
 RUN apt-get update \
     # dependencies for building Python packages
@@ -51,6 +53,10 @@ COPY ./compose/local/django/celery/flower/start /start-flower
 RUN sed -i 's/\r//' /start-flower
 RUN chmod +x /start-flower
 
+# Instalar librerias wkhtmltopdf
+RUN apt-get update
+RUN apt-get -f -y install wkhtmltopdf
+RUN apt-get -y install zlib1g fontconfig libxrender1 libfreetype6 libxext6 libx11-6
 
 WORKDIR /app
 
