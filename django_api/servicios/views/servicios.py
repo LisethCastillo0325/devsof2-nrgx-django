@@ -43,10 +43,6 @@ class ServicioViewSet(mixins.ListModelMixin,
         """
         return super().list(request, *args, **kwargs)
 
-        """list representa get usando queryset
-            retrieve obtiene 1 
-            create usar el serializer"""
-
     def retrieve(self, request, *args, **kwargs):
         """ Consultar servicio por ID
 
