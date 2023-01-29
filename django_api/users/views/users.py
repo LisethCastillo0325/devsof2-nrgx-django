@@ -23,6 +23,7 @@ from django_api.users import serializers
 
 #Filters
 from django_filters.rest_framework import DjangoFilterBackend
+from ..filter import UsersFilter
 
 
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
@@ -41,7 +42,7 @@ class UserViewSet(mixins.ListModelMixin,
 
     queryset = User.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields= User.objects.select_related('groups', 'groups__id').values('groups__id','is_active','created')
+    filter_class = UsersFilter
 
     def get_serializer_class(self):
         if self.action in ['login']:
