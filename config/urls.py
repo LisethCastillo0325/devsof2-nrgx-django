@@ -46,4 +46,5 @@ urlpatterns = [
     path('', include(('django_api.reportes.urls', 'reportes'), namespace='reportes')),
     path('', include(('django_api.contratos.urls', 'contratos'), namespace='contratos')),
     path('', include(('django_api.facturas.urls', 'facturas'), namespace='facturas')),
+    path('', include(('django_api.servicios.urls', 'servicios'), namespace='servicios')),
 ]

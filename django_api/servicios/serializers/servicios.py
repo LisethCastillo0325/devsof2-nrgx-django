@@ -26,8 +26,8 @@ class ServicioModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Servicios
         fields = [
-            'id','nombre','descripcion','created','update','unidad_medida',
-            'valor_unitario','dia_de_corte','porcentaje_recargo_mora'
+            'id','nombre','descripcion','created','updated','unidad_medida',
+            'valor_unitario','dia_de_corte','porcentaje_recargo_mora', 'is_active'
         ]
 
 class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
@@ -36,7 +36,7 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     """
     nombre = serializers.CharField(max_length=150)
     descripcion = serializers.CharField(max_length=150)
-    dia_de_corte= serializers.IntegerField()
+    dia_de_corte= serializers.IntegerField(min_value=1, max_value=30)
 
     unidad_medida = serializers.ChoiceField(
         choices=Servicios.UnidadMedidaChoices.choices

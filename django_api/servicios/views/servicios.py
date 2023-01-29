@@ -12,8 +12,7 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 
 # Models
-from django_api.servicios.models import Servicio
-
+from django_api.servicios.models import Servicios
 # Serializers
 from django_api.servicios import serializers
 
@@ -32,7 +31,7 @@ class ServicioViewSet(mixins.ListModelMixin,
     API de servicios
     """
 
-    queryset = Servicio.objects.all()
+    queryset = Servicios.objects.all()
 
     serializer_class = serializers.ServicioModelSerializer
 
@@ -79,5 +78,7 @@ class ServicioViewSet(mixins.ListModelMixin,
         data = self.get_serializer(instance=servicio).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-
-    
+    def perform_destroy(self, instance):
+        """Inhabilitar servicio."""
+        instance.is_active = False
+        instance.save()

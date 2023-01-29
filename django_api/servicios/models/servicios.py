@@ -20,6 +20,7 @@ class Servicios(DateBaseModel):
     valor_unitario = models.FloatField('Valor unitario')
     dia_de_corte = models.IntegerField('Día de corte')
     porcentaje_recargo_mora = models.FloatField('Porcentaje de recargo por mora')
+    is_active = models.BooleanField('Estado', default=True)
 
     def __str__(self):
         return "Servicio ID: {} Nombre: {}".format(self.id, self.nombre)
