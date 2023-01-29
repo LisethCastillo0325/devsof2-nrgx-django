@@ -3,7 +3,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 
 # Filters
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from ..filter import PublicidadFilter
 
@@ -24,7 +24,8 @@ class PublicidadViewSet(mixins.ListModelMixin,
     queryset = Publicidad.objects.all()
     serializer_class = publicidad_serialisers.PublicidadModelSerializer
     permission_classes = [IsAuthenticated]
-    filter_backends = [OrderingFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['nombre']
     ordering_fields = ['fecha_vigencia_inicio']
     filterset_class = PublicidadFilter
 
