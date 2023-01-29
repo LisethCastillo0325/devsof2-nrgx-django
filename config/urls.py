@@ -43,5 +43,8 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path(settings.ADMIN_URL, admin.site.urls),
     path('', include(('django_api.users.urls', 'users'), namespace='users')),
-    path('', include(('django_api.reportes.urls', 'reportes'), namespace='reportes'))
+    path('', include(('django_api.reportes.urls', 'reportes'), namespace='reportes')),
+    path('', include(('django_api.contratos.urls', 'contratos'), namespace='contratos')),
+    path('', include(('django_api.facturas.urls', 'facturas'), namespace='facturas')),
+    path('', include(('django_api.servicios.urls', 'servicios'), namespace='servicios')),
 ]

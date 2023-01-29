@@ -45,7 +45,7 @@ X_FRAME_OPTIONS = "DENY"
 
 # Static  files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_URL = 'app/static/'
+# STATIC_URL = 'app/static/'
 
 # Media
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
