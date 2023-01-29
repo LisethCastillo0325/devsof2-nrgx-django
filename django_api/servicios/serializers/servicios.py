@@ -43,6 +43,7 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     )
     valor_unitario = serializers.FloatField()
     porcentaje_recargo_mora = serializers.FloatField()
+    is_active = serializers.BooleanField(default=True)
     
 
     class Meta:

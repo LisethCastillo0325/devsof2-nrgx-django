@@ -14,16 +14,18 @@ class Publicidad(DateBaseModel):
         SECCION_B = 'B'
         SECCION_C = 'C'
 
+    nombre = models.CharField('Nombre', max_length=250, null=True, blank=True)
     fecha_vigencia_inicio = models.DateTimeField('Fecha inicio de vigencia')
     fecha_vigencia_fin = models.DateTimeField('Fecha fin de vigencia')
     valor = models.FloatField('Valor', help_text="Valor pagado por la publicidad", default=0)
-    imagen = models.ImageField('Imagen', upload_to ='uploads/publicidad/')
+    imagen = models.ImageField('Imagen', upload_to ='uploads/publicidad/%Y/%m/%d/')
     seccion_factura = models.CharField(
         'Seccion Factura',
         choices=SeccionFacturaChoices.choices,
         max_length=1,
         default=SeccionFacturaChoices.SECCION_A
     )
+    is_active = models.BooleanField('Estado', default=True)
 
     def __str__(self):
         return "Publicidad {}".format(self.id)

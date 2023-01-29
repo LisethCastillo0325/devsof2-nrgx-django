@@ -14,7 +14,10 @@ class DetalleFacturaAdmin(admin.ModelAdmin):
         'consumo_actual', 'valor_unitario', 'valor_total', 'created'
     )
 
+class PublicidadAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha_vigencia_inicio', 'fecha_vigencia_fin', 'valor', 'seccion_factura', 'imagen')
+
 # Register your models here.
 admin.site.register(Facturas, FacturasAdmin)
 admin.site.register(DetalleFactura, DetalleFacturaAdmin)
-admin.site.register(Publicidad)
+admin.site.register(Publicidad, PublicidadAdmin)
