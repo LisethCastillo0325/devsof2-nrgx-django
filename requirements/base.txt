@@ -3,6 +3,7 @@ psycopg2==2.9.5
 django-environ==0.9.0
 django-extensions>=3.2.1
 django-cors-headers==3.13.0
+Pillow==9.4.0
 
 #Djanfo filter
 django-filter==21.1

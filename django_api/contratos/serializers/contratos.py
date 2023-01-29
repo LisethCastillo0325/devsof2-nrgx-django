@@ -6,7 +6,6 @@ from rest_framework import serializers
 # Models
 from ..models.contratos import Contratos
 from django_api.users.models.users import User
-from django_api.utils.models.ciudades import Ciudades
 
 # Serializers
 from django_api.users.serializers import ClienteModelSerializer
