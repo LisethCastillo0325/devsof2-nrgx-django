@@ -21,6 +21,10 @@ from django_api.users.models import User
 # Serializers
 from django_api.users import serializers
 
+#Filters
+from django_filters.rest_framework import DjangoFilterBackend
+from ..filter import UsersFilter
+
 
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(
     auto_schema=None
@@ -37,6 +41,8 @@ class UserViewSet(mixins.ListModelMixin,
     """
 
     queryset = User.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filter_class = UsersFilter
 
     def get_serializer_class(self):
         if self.action in ['login']:

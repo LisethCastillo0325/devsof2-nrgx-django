@@ -30,7 +30,6 @@ class ReportesClientesViewSet(viewsets.GenericViewSet):
         filters = serializer.data
         qs = FaturasFilter(filters, queryset=qs).qs
 
-        print('** query: ', qs.query)
         if not qs.exists():
             return Response(data={
                 'detail': 'No existen datos entre las fechas {} y {}.'.format(
