@@ -14,6 +14,8 @@
 
 {% load static %}
 
+{% load humanize %}
+
 {% block content %}
 
     <div id="cabecera" class="row">
@@ -54,7 +56,7 @@
                         </tr>
                         <tr class="text-bg-primary rounded" width="100%">
                             <td>TOTAL A PAGAR</td>
-                            <td>{{data.total_a_pagar}}</td>
+                            <td>{{data.total_a_pagar | intcomma}}</td>
                         </tr>
                         <tr>
                             <td>FECHA DE EXPEDICIÓN</td>
@@ -103,7 +105,7 @@
 
                     <div class="col col-md-9">
                         <table class="table" style="width: 100%;" >
-                            <caption>Detalle Factura</caption>
+                            <caption>Detalle Servicio</caption>
                             <thead>
                                 <th>Cancepto</th>
                                 <th>Cantidad</th>
@@ -113,8 +115,8 @@
                             <tbody>
                                 <td>Consumo</td>
                                 <td>{{ detalle.consumo_actual }}</td>
-                                <td>{{ detalle.valor_unitario }}</td>
-                                <td>{{ detalle.valor_total }}</td>
+                                <td>{{ detalle.valor_unitario | intcomma }}</td>
+                                <td>{{ detalle.valor_total | intcomma}}</td>
                             </tbody>
                         </table>
                     </div>
@@ -134,15 +136,15 @@
                     <table class="table table-borderless" style="width: 100%;" >
                         <tr>
                             <th width="70%">Total Servicios</th>
-                            <td align="right">{{data.total_servicios}}</td>
+                            <td align="right">{{data.total_servicios | intcomma}}</td>
                         </tr>
                         <tr>
                             <th>+ Cuentas Vencidas</th>
-                            <td align="right">{{data.valor_pendiente_pago}}</td>
+                            <td align="right">{{data.valor_pendiente_pago | intcomma}}</td>
                         </tr>
                         <tr>
-                            <th>+ Recargo Mora {{data.porcentaje_recargo}} </th>
-                            <td align="right">{{data.valor_recargo}}</td>
+                            <th>+ Recargo Mora {{data.porcentaje_recargo}} %% </th>
+                            <td align="right">{{data.valor_recargo | intcomma}}</td>
                         </tr>
                     </table>
                 </div>
@@ -150,7 +152,7 @@
                     <table class="table table-borderless" style="width: 100%;" >
                         <tr>
                             <th width="70%">TOTAL A PAGAR</th>
-                            <td align="right">{{data.total_a_pagar}}</td>
+                            <td align="right"><strong>{{data.total_a_pagar | intcomma}}</strong></td>
                         </tr>
                     </table>
                 </div>
