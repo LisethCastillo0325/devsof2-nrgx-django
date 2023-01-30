@@ -68,6 +68,18 @@
                             <td><strong>FECHA DE VENCIMIENTO</strong></td>
                             <td><strong>{{data.fecha_vencimiento}}</strong></td>
                         </tr>
+                        {% if  data.estado.value == '1' %}
+                            <tr class="text-bg-info text-white rounded" width="100%">
+                                <td><strong>ESTADO DE PAGO</strong></td>
+                                <td><strong>{{data.estado.label}}</strong></td>
+                            </tr>
+                        {% else %}
+                            <tr class="text-bg-warning text-white rounded" width="100%">
+                                <td><strong>ESTADO DE PAGO</strong></td>
+                                <td><strong>{{data.estado.label}}</strong></td>
+                            </tr>
+                        {% endif %}
+                        
                     </table>
 
 
