@@ -15,7 +15,7 @@ PRODUCTION = True
 # Databases
 DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # NOQA
 
-URL_BACKEND = 'https://nrgx.tortascrispan.com'
+URL_BACKEND = 'https://nrgx.tortascrispan.com/'
 
 # # Cache
 # CACHES = {
