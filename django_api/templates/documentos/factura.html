@@ -110,7 +110,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col col-md-3">
+                        <div class="col-4">
                             Uso: {{ data.contrato.tipo_de_uso.label }} <br>
                             Estrato: {{ data.contrato.estrato }}<br>
                             Lecturra Actual: {{ detalle.lectura_actual }}<br>
@@ -119,20 +119,26 @@
                             Consumo Actual: {{ detalle.consumo_actual }} {{ detalle.servicio.unidad_medida.label }}<br>
                         </div>
 
-                        <div class="col col-md-9">
+                        <div class="col-8">
                             <table class="table" style="width: 100%;" >
                                 <caption>Detalle Servicio</caption>
-                                <thead>
-                                    <th>Cancepto</th>
+                                <thead align="center">
+                                    <th align="center">Cancepto</th>
                                     <th>Cantidad</th>
                                     <th>Valor Unitario</th>
-                                    <th>Total a Pagar</th>
+                                    <th width="15%">Valor Total</th>
+                                    <th>% Recargo Mora</th>
+                                    <th>Valor Recargo Mora</th>
+                                    <th width="15%">Total a Pagar</th>
                                 </thead>
-                                <tbody>
+                                <tbody align="center">
                                     <td>Consumo</td>
                                     <td>{{ detalle.consumo_actual }}</td>
                                     <td>{{ detalle.valor_unitario | intcomma }}</td>
                                     <td>$ {{ detalle.valor_total | intcomma}}</td>
+                                    <td>{{ detalle.porcentaje_recargo }}</td>
+                                    <td>$ {{ detalle.valor_recargo | intcomma}}</td>
+                                    <td>$ {{ detalle.total_a_pagar | intcomma}}</td>
                                 </tbody>
                             </table>
                         </div>
@@ -161,7 +167,7 @@
                             <td align="right">{{data.valor_pendiente_pago | intcomma}}</td>
                         </tr>
                         <tr>
-                            <td>+ Recargo Mora {{data.porcentaje_recargo}} % </td>
+                            <td>+ Recargo Mora</td>
                             <td align="right">{{data.valor_recargo | intcomma}}</td>
                         </tr>
                     </table>

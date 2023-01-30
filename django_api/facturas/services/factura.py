@@ -7,7 +7,7 @@ from datetime import timedelta
 
 # Django
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
 # Models
 from ..models.facturas import Facturas, DetalleFactura
@@ -18,7 +18,19 @@ from django_api.servicios.models.servicios import Servicios, LogConsumoServicios
 class FacturaServices:
 
     DIAS_VENCIMIENTO = 10
-    PORCENTAJE_RECARGO = 2
+
+    def crear_facturas_contratos(self):
+        # Consultar Contratos activos
+        contratos = Contratos.objects.filter(
+            estado=Contratos.EstadoChoices.ACTIVO
+        ).values_list('id', flat=True)
+        
+        facturas = []
+        # Crear factura por cada contrato
+        for contrato_id in contratos:
+            facturas.append(self.crear_factura(contrato_id))
+
+        return facturas
 
     def crear_factura(self, contrato_id):
         valor_recargo = 0
@@ -43,11 +55,11 @@ class FacturaServices:
         factura.save()
 
         return factura
-        
+
     def __crear_cabecera_factura(self, contrato: Contratos):
         hoy = timezone.now()
         fecha_vencimiento = hoy + timedelta(days=self.DIAS_VENCIMIENTO)
-        valor_pendiente_pago = self.get_valor_pendiente_pago_facturas(contrato)
+        valor_pendiente_pago, cantidad_facturas = self.get_valor_pendiente_pago_facturas(contrato)
         data = {
             'contrato': contrato,
             'fecha_expedicion': hoy,
@@ -55,15 +67,14 @@ class FacturaServices:
             'estado': Facturas.EstadoChoices.PENDIENTE,
             'numero_pago_electronico': self.__get_numero_pago_electronico(),
             'valor_pendiente_pago': valor_pendiente_pago,
-            'is_recargo': (True if valor_pendiente_pago > 0 else False)
+            'is_recargo': (True if cantidad_facturas >= 2 else False)
         }
 
-        print('*** crear factura data: ', data)
         return Facturas.objects.create(**data)
 
     def __crear_detalle_factura(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
         lectura_anterior = self.get_lectura_anterior_servicio(contrato, factura, servicio)
-        lectura_actual = self.get_lectura_actual_servicio(factura, servicio)
+        lectura_actual = (lectura_anterior + self.get_lectura_actual_servicio(factura, servicio))
         consumo_actual = (lectura_actual - lectura_anterior)
         valor_unitario = servicio.valor_unitario
         valor_total = (consumo_actual * valor_unitario)
@@ -78,7 +89,7 @@ class FacturaServices:
             'consumo_actual': consumo_actual,
             'valor_unitario': valor_unitario,
             'valor_total': valor_total,
-            'porcentaje_recargo': servicio.porcentaje_recargo_mora,
+            'porcentaje_recargo': (0 if not factura.is_recargo else servicio.porcentaje_recargo_mora),
             'valor_recargo': valor_recargo,
             'total_a_pagar': total_a_pagar
         }
@@ -99,19 +110,18 @@ class FacturaServices:
         ).values(
             'contrato_id'
         ).annotate(
-            deuda=Sum('total_a_pagar')
+            deuda=Sum('total_a_pagar'),
+            cantidad_facturas=Count('id')
         )
-        print('** get_valor_pendiente_pago_facturas: ', facturas_pendientes_pago.query)
-        print('** get_valor_pendiente_pago_facturas: ', facturas_pendientes_pago)
 
         if facturas_pendientes_pago.count() == 0:
             valor = 0
+            cantidad_facturas = 0
         else:
             valor = facturas_pendientes_pago[0]['deuda']
+            cantidad_facturas = facturas_pendientes_pago[0]['cantidad_facturas']
 
-        print('** valor: ', valor)
-
-        return valor
+        return valor, cantidad_facturas
 
     def get_valor_recargo_servicio(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
         valor_recargo = 0
@@ -135,9 +145,6 @@ class FacturaServices:
         )
         valor = detalles_pendientes_pago[0]['deuda']
 
-        print('** get_valor_pendiente_pago_servicio: ', detalles_pendientes_pago.query)
-        print('** valor: ', valor)
-
         return valor
 
     def get_detalle_anterior_servicio(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
@@ -149,8 +156,6 @@ class FacturaServices:
             factura__estado=Facturas.EstadoChoices.INACTIVA
         ).order_by('factura_id')
         
-        print('** get_detalle_anterior_servicio: ', detalle.query)
-
         return detalle.first()
 
     def get_lectura_anterior_servicio(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
@@ -179,7 +184,6 @@ class FacturaServices:
         # Log Consumo
         self.__save_log_consumo_servicio(factura, servicio, lectura, payload, response)
 
-        print('*** get_lectura_actual_servicio: ', data)
         return lectura
 
     def __save_log_consumo_servicio(self, factura: Facturas, servicio: Servicios, lectura, payload, response):

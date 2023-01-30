@@ -40,7 +40,7 @@ class LogConsumoServicios(DateBaseModel):
     data_received = models.JSONField('Informacion obtenida en peticion.', blank=True, null=True)
 
     def __str__(self):
-        return "LogConsumoServicios ID: {} Contrato: {}".format(self.id, self.factura.id)
+        return "LogConsumoServicios ID: {} Factura: {}".format(self.id, self.factura.id)
 
     class Meta(DateBaseModel.Meta):
         db_table = 'log_consumo_servicios'

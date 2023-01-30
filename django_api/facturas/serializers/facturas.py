@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 # Models
 from django_api.facturas.models import Facturas, DetalleFactura
+from django_api.contratos.models import Contratos
 
 # Serializers
 from django_api.contratos.serializers.contratos import ContratosModelSerializer
@@ -25,6 +26,14 @@ class FacturasModelSerializer(serializers.ModelSerializer):
     estado = DataChoiceSerializer()
     detalle_factura = serializers.SerializerMethodField()
     total_servicios = serializers.SerializerMethodField()
+    fecha_expedicion = serializers.SerializerMethodField()
+    fecha_vencimiento = serializers.SerializerMethodField()
+
+    def get_fecha_expedicion(self, obj):
+        return obj.fecha_expedicion.strftime('%Y-%m-%d')
+
+    def get_fecha_vencimiento(self, obj):
+        return obj.fecha_vencimiento.strftime('%Y-%m-%d')
 
     def get_detalle_factura(self, obj):
         try:
@@ -40,9 +49,11 @@ class FacturasModelSerializer(serializers.ModelSerializer):
             total += detalle.valor_total
         return total
 
-
     class Meta:
         model = Facturas
         fields = ('__all__')
 
 
+class AddFacturaSerializer(serializers.Serializer):
+    contrato = serializers.PrimaryKeyRelatedField(
+        queryset=Contratos.objects.filter(estado=Contratos.EstadoChoices.ACTIVO).all())

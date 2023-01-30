@@ -46,6 +46,8 @@ class FacturasViewSet(mixins.ListModelMixin,
 
     def get_serializer_class(self):
         """Return serializer based on action."""
+        if self.action == 'create':
+            return facturas_serialisers.AddFacturaSerializer
         return facturas_serialisers.FacturasModelSerializer
 
     def get_object(self):
@@ -70,12 +72,24 @@ class FacturasViewSet(mixins.ListModelMixin,
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
+        serializer = facturas_serialisers.AddFacturaSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Crear factura al contrato
         service = FacturaServices()
-        factura = service.crear_factura(contrato_id=3)
-        print('*** Views factura: ', factura)
+        factura = service.crear_factura(contrato_id=serializer.data['contrato'])
+    
         data = self.get_serializer(instance=factura).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['GET'])
+    def crear_facturas_contratos(self, request, *args, **kwargs):
+        # Crear factura a cada contrato activo
+        service = FacturaServices()
+        facturas = service.crear_facturas_contratos()
+
+        data = self.get_serializer(instance=facturas, many=True).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
+        
     def destroy(self, request, *args, **kwargs):
         """ Inactivar factura
 
