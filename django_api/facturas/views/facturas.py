@@ -78,7 +78,7 @@ class FacturasViewSet(mixins.ListModelMixin,
         service = FacturaServices()
         factura = service.crear_factura(contrato_id=serializer.data['contrato'])
     
-        data = self.get_serializer(instance=factura).data
+        data = facturas_serialisers.FacturasModelSerializer(instance=factura).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['GET'])
@@ -87,7 +87,9 @@ class FacturasViewSet(mixins.ListModelMixin,
         service = FacturaServices()
         facturas = service.crear_facturas_contratos()
 
-        data = self.get_serializer(instance=facturas, many=True).data
+        data = facturas_serialisers.FacturasModelSerializer(
+            instance=facturas, many=True).data
+            
         return Response(data=data, status=status.HTTP_201_CREATED)
         
     def destroy(self, request, *args, **kwargs):

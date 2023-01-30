@@ -8,11 +8,15 @@ from datetime import timedelta
 # Django
 from django.utils import timezone
 from django.db.models import Sum, Count
+from django.core import exceptions
 
 # Models
-from ..models.facturas import Facturas, DetalleFactura
+from ..models.facturas import Facturas, DetalleFactura, ConfiguracionesFacturacion
 from django_api.contratos.models.contratos import Contratos
 from django_api.servicios.models.servicios import Servicios, LogConsumoServicios
+
+# Utils
+from django_api.utils.exceptions import CustomValidationAPIException
 
 
 class FacturaServices:
@@ -33,6 +37,10 @@ class FacturaServices:
         return facturas
 
     def crear_factura(self, contrato_id):
+        
+        # Validación de día de cortte
+        self.__validacion_dia_de_corte()
+
         valor_recargo = 0
         total_a_pagar = 0
         
@@ -198,3 +206,18 @@ class FacturaServices:
             LogConsumoServicios.objects.create(**data_log)
         except Exception as error:
             print('*** Error en log consumo: ', error)
+
+    def __validacion_dia_de_corte(self):
+        configuracion = ConfiguracionesFacturacion.objects.order_by('id').values('dia_de_corte').first()
+        if configuracion is None:
+            raise CustomValidationAPIException({'detail': 'No existe configuración para la facturación.'})
+
+        if configuracion['dia_de_corte'] is None:
+            raise CustomValidationAPIException({'detail': 'No existe configuración de día de corte para la facturación.'})
+
+        dia_hoy = timezone.now().day
+        dia_de_corte = configuracion['dia_de_corte']
+
+        if int(dia_hoy) != int(dia_de_corte):
+            raise CustomValidationAPIException({
+                'detail': f'El día de corte para la facturación es el día {dia_de_corte} de cada mes.'})
