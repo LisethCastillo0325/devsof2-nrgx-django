@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.conf import settings
 
 # Rest Framework
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 
@@ -17,7 +17,6 @@ from ..models.publicidad import Publicidad
 
 # Serializers
 from ..serializers import facturas as facturas_serialisers
-from ..serializers.publicidad import PublicidadModelSerializer
 
 # Views
 from django_api.utils.views.documentos import DocumentosView
@@ -111,7 +110,7 @@ class FacturasViewSet(mixins.ListModelMixin,
 
         template = os.path.join('documentos', 'factura.html')
         documentos_view = DocumentosView()
-        
+
         return documentos_view.generar_pdf(
             template=template,
             data=data,
