@@ -6,6 +6,7 @@ from django.conf import settings
 from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 
 # Filters
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -40,6 +41,12 @@ class FacturasViewSet(mixins.ListModelMixin,
     def get_serializer_class(self):
         """Return serializer based on action."""
         return facturas_serialisers.FacturasModelSerializer
+
+    def get_object(self):
+        obj = get_object_or_404(self.get_queryset().exclude(
+            estado=Facturas.EstadoChoices.INACTIVA), pk=self.kwargs["pk"])
+        self.check_object_permissions(self.request, obj)
+        return obj
 
     def list(self, request, *args, **kwargs):
         """ Listar facturas
