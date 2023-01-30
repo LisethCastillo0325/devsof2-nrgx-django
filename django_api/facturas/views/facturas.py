@@ -1,10 +1,11 @@
 import os
+from django.utils import timezone
+from django.conf import settings
 
 # Rest Framework
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from rest_framework.response import Response
 
 # Filters
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -12,6 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 # Models
 from ..models.facturas import Facturas
+from ..models.publicidad import Publicidad
 
 # Serializers
 from ..serializers import facturas as facturas_serialisers
@@ -72,9 +74,43 @@ class FacturasViewSet(mixins.ListModelMixin,
         instance = self.get_object()
         data = self.get_serializer(instance=instance).data
 
-        template = os.path.join('documentos', 'factura.html')
+        # Consultar publicidad vigente
+        hoy = timezone.now()
+        filtros_publicidad = {
+            'fecha_vigencia_inicio__lte': hoy,
+            'fecha_vigencia_fin__gte': hoy,
+            'is_active': True,
+        }
 
+        publicidad_seccion_a = Publicidad.objects.filter(
+            **filtros_publicidad,
+            seccion_factura=Publicidad.SeccionFacturaChoices.SECCION_A
+        ).first()
+
+        publicidad_seccion_b = Publicidad.objects.filter(
+            **filtros_publicidad,
+            seccion_factura=Publicidad.SeccionFacturaChoices.SECCION_B
+        ).first()
+
+        publicidad_seccion_c = Publicidad.objects.filter(
+            **filtros_publicidad,
+            seccion_factura=Publicidad.SeccionFacturaChoices.SECCION_C
+        ).first()
+
+        publicidad_otros = Publicidad.objects.filter(
+            **filtros_publicidad,
+            seccion_factura=Publicidad.SeccionFacturaChoices.OTRO
+        )
+
+        data['publicidad_seccion_a'] = publicidad_seccion_a
+        data['publicidad_seccion_b'] = publicidad_seccion_b
+        data['publicidad_seccion_c'] = publicidad_seccion_c
+        data['publicidad_otros'] = publicidad_otros
+        data['url_api'] = settings.URL_BACKEND
+
+        template = os.path.join('documentos', 'factura.html')
         documentos_view = DocumentosView()
+
         return documentos_view.generar_pdf(
             template=template,
             data=data,

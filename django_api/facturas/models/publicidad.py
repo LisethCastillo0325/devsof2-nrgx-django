@@ -2,7 +2,6 @@
 
 # Django
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 # Utilities
 from django_api.utils.models import DateBaseModel
@@ -13,6 +12,7 @@ class Publicidad(DateBaseModel):
         SECCION_A = 'A'
         SECCION_B = 'B'
         SECCION_C = 'C'
+        OTRO = 'OTRO'
 
     nombre = models.CharField('Nombre', max_length=250, null=True, blank=True)
     fecha_vigencia_inicio = models.DateTimeField('Fecha inicio de vigencia')
@@ -22,7 +22,7 @@ class Publicidad(DateBaseModel):
     seccion_factura = models.CharField(
         'Seccion Factura',
         choices=SeccionFacturaChoices.choices,
-        max_length=1,
+        max_length=4,
         default=SeccionFacturaChoices.SECCION_A
     )
     is_active = models.BooleanField('Estado', default=True)

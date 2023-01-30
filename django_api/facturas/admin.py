@@ -15,7 +15,12 @@ class DetalleFacturaAdmin(admin.ModelAdmin):
     )
 
 class PublicidadAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fecha_vigencia_inicio', 'fecha_vigencia_fin', 'valor', 'seccion_factura', 'imagen')
+    list_display = (
+        'id', 'fecha_vigencia_inicio', 'fecha_vigencia_fin', 'valor', 
+        'seccion_factura', 'imagen', 'is_active'
+    )
+    list_filter = ('is_active', 'seccion_factura')
+    ordering = ['seccion_factura']
 
 # Register your models here.
 admin.site.register(Facturas, FacturasAdmin)

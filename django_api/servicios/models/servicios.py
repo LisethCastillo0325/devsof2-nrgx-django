@@ -11,7 +11,7 @@ from django_api.utils.models import DateBaseModel
 class Servicios(DateBaseModel):
 
     class UnidadMedidaChoices(models.TextChoices):
-        KWH = 1, _('KILOVATIO HORA')
+        KWH = 1, _('KILOVATIOS / HORA')
         MC = 2, _('METROS CÚBICOS')
 
     nombre = models.CharField('Nombre', max_length=150)

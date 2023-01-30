@@ -8,11 +8,12 @@ from django_api.facturas.models import Facturas, DetalleFactura
 
 # Serializers
 from django_api.contratos.serializers.contratos import ContratosModelSerializer
-from django_api.utils.serializers import  DataChoiceSerializer, DataSerializer
+from django_api.utils.serializers import  DataChoiceSerializer
+from django_api.servicios.serializers import ServicioModelSerializer
 
 
 class DetalleFacturaModelSerializer(serializers.ModelSerializer):
-    servicio = DataSerializer()
+    servicio = ServicioModelSerializer()
 
     class Meta:
         model = DetalleFactura
@@ -23,6 +24,7 @@ class FacturasModelSerializer(serializers.ModelSerializer):
     contrato = ContratosModelSerializer()
     estado = DataChoiceSerializer()
     detalle_factura = serializers.SerializerMethodField()
+    total_servicios = serializers.SerializerMethodField()
 
     def get_detalle_factura(self, obj):
         try:
@@ -31,6 +33,14 @@ class FacturasModelSerializer(serializers.ModelSerializer):
         except Exception:
             return None
     
+    def get_total_servicios(self, obj):
+        total = 0
+        queryset = DetalleFactura.objects.filter(factura_id=obj.id)
+        for detalle in queryset:
+            total += detalle.valor_total
+        return total
+
+
     class Meta:
         model = Facturas
         fields = ('__all__')
