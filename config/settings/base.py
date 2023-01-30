@@ -30,6 +30,8 @@ MEDIA_URL = '/media/'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
+URL_BACKEND = 'http://localhost:8000/'
+
 env = environ.Env()
 
 # Base
