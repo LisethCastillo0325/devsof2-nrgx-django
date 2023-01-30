@@ -1,2 +1,2 @@
-from .facturas import Facturas, DetalleFactura
+from .facturas import Facturas, DetalleFactura, ConfiguracionesFacturacion
 from .publicidad import Publicidad
