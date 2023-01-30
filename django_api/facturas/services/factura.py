@@ -12,7 +12,7 @@ from django.db.models import Sum
 # Models
 from ..models.facturas import Facturas, DetalleFactura
 from django_api.contratos.models.contratos import Contratos
-from django_api.servicios.models.servicios import Servicios
+from django_api.servicios.models.servicios import Servicios, LogConsumoServicios
 
 
 class FacturaServices:
@@ -57,11 +57,13 @@ class FacturaServices:
             'valor_pendiente_pago': valor_pendiente_pago,
             'is_recargo': (True if valor_pendiente_pago > 0 else False)
         }
+
+        print('*** crear factura data: ', data)
         return Facturas.objects.create(**data)
 
     def __crear_detalle_factura(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
         lectura_anterior = self.get_lectura_anterior_servicio(contrato, factura, servicio)
-        lectura_actual = self.get_lectura_actual_servicio(contrato)
+        lectura_actual = self.get_lectura_actual_servicio(factura, servicio)
         consumo_actual = (lectura_actual - lectura_anterior)
         valor_unitario = servicio.valor_unitario
         valor_total = (consumo_actual * valor_unitario)
@@ -70,7 +72,7 @@ class FacturaServices:
 
         data = {
             'factura_id': factura.id,
-            'servicio': servicio.id,
+            'servicio_id': servicio.id,
             'lectura_anterior': lectura_anterior,
             'lectura_actual': lectura_actual,
             'consumo_actual': consumo_actual,
@@ -99,9 +101,14 @@ class FacturaServices:
         ).annotate(
             deuda=Sum('total_a_pagar')
         )
-        valor = facturas_pendientes_pago[0]['deuda']
-
         print('** get_valor_pendiente_pago_facturas: ', facturas_pendientes_pago.query)
+        print('** get_valor_pendiente_pago_facturas: ', facturas_pendientes_pago)
+
+        if facturas_pendientes_pago.count() == 0:
+            valor = 0
+        else:
+            valor = facturas_pendientes_pago[0]['deuda']
+
         print('** valor: ', valor)
 
         return valor
@@ -120,7 +127,7 @@ class FacturaServices:
             factura__contrato_id=contrato.id,
             servicio_id=servicio.id,
         ).values(
-            'servisio_id'
+            'servicio_id'
         ).annotate(
             deuda=Sum('total_a_pagar')
         ).exclude(
@@ -140,11 +147,11 @@ class FacturaServices:
         ).exclude(
             factura_id=factura.id,
             factura__estado=Facturas.EstadoChoices.INACTIVA
-        ).order_by('factura_id').first()
-
+        ).order_by('factura_id')
+        
         print('** get_detalle_anterior_servicio: ', detalle.query)
 
-        return detalle
+        return detalle.first()
 
     def get_lectura_anterior_servicio(self, contrato: Contratos, factura: Facturas, servicio: Servicios):
         detalle_anterior = self.get_detalle_anterior_servicio(contrato, factura, servicio)
@@ -153,15 +160,37 @@ class FacturaServices:
         else:
             return detalle_anterior.lectura_actual
 
-    def get_lectura_actual_servicio(self, contrato: Contratos):
+    def get_lectura_actual_servicio(self, factura: Facturas, servicio: Servicios):
         url = "https://energy-service-ds-v3cot.ondigitalocean.app/consumption"
         payload = json.dumps({
-            "client_id": contrato.cliente.identification_number
+            "client_id": factura.contrato.cliente.identification_number
         })
         headers = {
             'Content-Type': 'application/json'
         }
         response = requests.post(url, headers=headers, json=payload)
         data = json.loads(response.text)
+
+        try:
+            lectura = data['energy consumption']
+        except Exception:
+            lectura = 0
+
+        # Log Consumo
+        self.__save_log_consumo_servicio(factura, servicio, lectura, payload, response)
+
         print('*** get_lectura_actual_servicio: ', data)
-        return data['energy consumption']
+        return lectura
+
+    def __save_log_consumo_servicio(self, factura: Facturas, servicio: Servicios, lectura, payload, response):
+        try:
+            data_log = {
+                'factura_id': factura.id,
+                'servicio_id': servicio.id,
+                'lectura': lectura,
+                'data_sent': payload,
+                'data_received': response.text
+            }
+            LogConsumoServicios.objects.create(**data_log)
+        except Exception as error:
+            print('*** Error en log consumo: ', error)

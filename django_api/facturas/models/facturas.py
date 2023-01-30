@@ -19,8 +19,8 @@ class Facturas(DateBaseModel):
         INACTIVA = 3,_('INACTIVA')
 
     contrato = models.ForeignKey('contratos.Contratos', on_delete=models.CASCADE)
-    fecha_expedicion= models.DateField('Fecha de expedición')
-    fecha_vencimiento = models.DateField('Fecha de vencimiento')
+    fecha_expedicion= models.DateTimeField('Fecha de expedición')
+    fecha_vencimiento = models.DateTimeField('Fecha de vencimiento')
     numero_pago_electronico = models.CharField(max_length=15)
     estado = models.CharField(max_length=1, choices=EstadoChoices.choices, default=EstadoChoices.PENDIENTE)
     valor_pendiente_pago = models.FloatField('Valor pendiente de pago', default=0)
@@ -79,4 +79,4 @@ class ConfiguracionesFacturacion(DateBaseModel):
             db_table = 'configuraciones_facturacion'
             managed = True
             verbose_name = 'configuraciones_facturacion'
-            verbose_name_plural = 'configuraciones_facturacion'
+            verbose_name_plural = 'configuraciones facturacion'

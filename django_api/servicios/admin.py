@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models.servicios import Servicios
+from .models.servicios import Servicios, LogConsumoServicios
 
 class ServiciosAdmin(admin.ModelAdmin):
     list_display = (
@@ -12,3 +12,4 @@ class ServiciosAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Servicios, ServiciosAdmin)
+admin.site.register(LogConsumoServicios)
