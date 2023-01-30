@@ -27,7 +27,7 @@ class ServicioModelSerializer(serializers.ModelSerializer):
         model = Servicios
         fields = [
             'id','nombre','descripcion','created','updated','unidad_medida',
-            'valor_unitario','dia_de_corte','porcentaje_recargo_mora', 'is_active'
+            'valor_unitario', 'porcentaje_recargo_mora', 'is_active'
         ]
 
 class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
@@ -36,8 +36,6 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
     """
     nombre = serializers.CharField(max_length=150)
     descripcion = serializers.CharField(max_length=150)
-    dia_de_corte= serializers.IntegerField(min_value=1, max_value=30)
-
     unidad_medida = serializers.ChoiceField(
         choices=Servicios.UnidadMedidaChoices.choices
     )
@@ -50,10 +48,6 @@ class UpdateAndCreateServicioSerializer(serializers.ModelSerializer):
         """Meta class."""
         model = Servicios
         fields = '__all__'
-
-    """def dia_de_corte_validate(self, dia_de_corte):
-        dia_de_corte_validation.validate_dia(dia_de_corte=dia_de_corte)
-        return dia_de_corte"""
 
     def create(self, data):
         """

@@ -1,12 +1,14 @@
 import os
 from django.utils import timezone
 from django.conf import settings
+from django.db import transaction
 
 # Rest Framework
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 # Filters
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -22,10 +24,14 @@ from ..serializers import facturas as facturas_serialisers
 # Views
 from django_api.utils.views.documentos import DocumentosView
 
+# Services
+from ..services.factura import FacturaServices
+
 
 class FacturasViewSet(mixins.ListModelMixin,
                       mixins.RetrieveModelMixin,
                       mixins.DestroyModelMixin,
+                      mixins.CreateModelMixin,
                       viewsets.GenericViewSet):
 
     queryset = Facturas.objects.all()
@@ -40,6 +46,8 @@ class FacturasViewSet(mixins.ListModelMixin,
 
     def get_serializer_class(self):
         """Return serializer based on action."""
+        if self.action == 'create':
+            return facturas_serialisers.AddFacturaSerializer
         return facturas_serialisers.FacturasModelSerializer
 
     def get_object(self):
@@ -62,7 +70,28 @@ class FacturasViewSet(mixins.ListModelMixin,
         """  
         return super().retrieve(request, *args, **kwargs)
 
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        serializer = facturas_serialisers.AddFacturaSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Crear factura al contrato
+        service = FacturaServices()
+        factura = service.crear_factura(contrato_id=serializer.data['contrato'])
+    
+        data = facturas_serialisers.FacturasModelSerializer(instance=factura).data
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['GET'])
+    def crear_facturas_contratos(self, request, *args, **kwargs):
+        # Crear factura a cada contrato activo
+        service = FacturaServices()
+        facturas = service.crear_facturas_contratos()
+
+        data = facturas_serialisers.FacturasModelSerializer(
+            instance=facturas, many=True).data
+            
+        return Response(data=data, status=status.HTTP_201_CREATED)
+        
     def destroy(self, request, *args, **kwargs):
         """ Inactivar factura
 
