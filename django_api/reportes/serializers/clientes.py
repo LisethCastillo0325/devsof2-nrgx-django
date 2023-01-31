@@ -19,7 +19,7 @@ class ReporteFacturasClientesSerializer(serializers.ModelSerializer):
         model = Facturas
         fields = [
             'id', 'contrato', 'valor_pendiente_pago', 'estado', 
-            'is_recargo', 'porcentaje_recargo', 'valor_recargo', 'total_a_pagar'
+            'is_recargo', 'valor_recargo', 'total_a_pagar'
         ]
 
 class FiltrosReporteFacturasClientesSerializer(serializers.Serializer):
