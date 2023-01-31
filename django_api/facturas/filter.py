@@ -5,6 +5,7 @@ import rest_framework_filters as filters
 
 # Models
 from .models.facturas import Facturas
+from .models.publicidad import Publicidad
 
 
 class NumberInFilter(BaseInFilter, NumberFilter):
@@ -20,3 +21,12 @@ class FaturasFilter(filters.FilterSet):
     class Meta:
         model = Facturas
         fields = ['created__gte', 'created__lte', 'clientes', 'contratos']
+
+
+class PublicidadFilter(filters.FilterSet):
+    fecha_vigencia_inicio = DateFilter(field_name='fecha_vigencia_inicio', lookup_expr='date__gte')
+    fecha_vigencia_fin = DateFilter(field_name='fecha_vigencia_fin', lookup_expr='date__lte')
+
+    class Meta:
+        model = Publicidad
+        fields = ['fecha_vigencia_inicio', 'fecha_vigencia_fin', 'seccion_factura', 'is_active']

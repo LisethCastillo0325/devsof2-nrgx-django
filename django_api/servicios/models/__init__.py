@@ -1,1 +1,1 @@
-from .servicios import Servicios
+from .servicios import Servicios, LogConsumoServicios
