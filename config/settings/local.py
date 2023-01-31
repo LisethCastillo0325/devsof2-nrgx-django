@@ -16,7 +16,14 @@ ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
     "3.20.82.253",
-    "nrgx.tortascrispan.com"
+    "nrgx.tortascrispan.com",
+    "54.234.83.56",
+    "34.206.235.231",
+    "api-nrgx.tortascrispan.com"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.tortascrispan.com"
 ]
 
 # Cache
