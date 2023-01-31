@@ -31,6 +31,27 @@ Crear migraciones
 
     docker-compose run --rm django python manage.py migrate
 
+#### Ejecutar con base de datos local
+
+Construir proyecto
+
+    docker-compose -f local-db.yml build
+
+Crear migraciones
+
+    docker-compose -f local-db.yml run --rm django python manage.py makemigrations
+
+    docker-compose -f local-db.yml run --rm django python manage.py migrate
+
+Crear super usuario
+
+    docker-compose -f local-db.yml run --rm django python manage.py createsuperuser
+
+Ejecutar proyecto
+
+    docker-compose -f local-db.yml up
+
+
 ### En el ambiente Producción
 
 Copiar o actualizar archivos estaticos

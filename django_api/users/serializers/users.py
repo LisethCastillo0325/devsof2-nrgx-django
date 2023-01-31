@@ -17,7 +17,6 @@ from django.contrib.auth.models import Group
 # Utils
 from django_api.utils.serializers import DataChoiceSerializer
 from django.utils import timezone
-from datetime import timedelta
 from django_api.utils.custom_regex_validators import CellNumberRegexValidator
 
 
