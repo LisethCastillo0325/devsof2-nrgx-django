@@ -55,18 +55,11 @@ class FacturasViewSet(mixins.ListModelMixin,
         return obj
 
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        """ Listar facturas
 
-
-        print('** desde aca:  ', queryset.query)
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+            Permite listar todos los facturas registradas en el sistema.
+        """
+        return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         """ Consultar factura por ID
