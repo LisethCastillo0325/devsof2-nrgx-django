@@ -18,7 +18,7 @@ from django_api.facturas.filter import FaturasFilter
 
 class ReportesClientesViewSet(viewsets.GenericViewSet):
     
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=['GET'])
     def informacion_financiera(self, request, **kwargs):
