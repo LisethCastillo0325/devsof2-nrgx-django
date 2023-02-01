@@ -18,4 +18,7 @@ class UsersFilter(filters.FilterSet):
 
     class Meta:
         model = User
-        fields = ['created__gte', 'created__lte', 'groups', 'created', 'is_active']
+        fields = [
+            'created__gte', 'created__lte', 'groups', 'created', 'is_active',
+            'identification_type', 'identification_number', 'birth_date'
+        ]

@@ -22,6 +22,11 @@ class ReportesClientesViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=['GET'])
     def informacion_financiera(self, request, **kwargs):
+        """ Información financiera de clientes
+
+            Reporte de información financiera de los clientes registrados en el sistema.
+        """
+
         qs = Facturas.objects.select_related('contrato', 'contrato__cliente').all()
         serializer = FiltrosReporteFacturasClientesSerializer(
             data=request.GET,

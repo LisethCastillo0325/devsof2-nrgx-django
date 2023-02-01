@@ -19,7 +19,7 @@ class Facturas(DateBaseModel):
         INACTIVA = 3,_('INACTIVA')
 
     contrato = models.ForeignKey('contratos.Contratos', on_delete=models.CASCADE)
-    fecha_expedicion= models.DateTimeField('Fecha de expedición')
+    fecha_expedicion = models.DateTimeField('Fecha de expedición')
     fecha_vencimiento = models.DateTimeField('Fecha de vencimiento')
     numero_pago_electronico = models.CharField(max_length=15)
     estado = models.CharField(max_length=1, choices=EstadoChoices.choices, default=EstadoChoices.PENDIENTE)
