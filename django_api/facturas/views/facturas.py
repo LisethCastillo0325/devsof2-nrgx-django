@@ -13,6 +13,7 @@ from rest_framework.response import Response
 # Filters
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from ..filter import FaturasViewFilter
 
 # Models
 from ..models.facturas import Facturas
@@ -39,10 +40,7 @@ class FacturasViewSet(mixins.ListModelMixin,
     filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     search_fields = ['contrato__cliente__identification_number']
     ordering_fields = ['contrato__cliente']
-    filter_fields = (
-        'contrato', 'contrato__cliente', 'contrato__cliente__identification_number',
-        'estado', 'is_recargo', 'numero_pago_electronico', 'fecha_expedicion', 'fecha_vencimiento'
-    )
+    filterset_class = FaturasViewFilter
 
     def get_serializer_class(self):
         """Return serializer based on action."""
@@ -57,11 +55,18 @@ class FacturasViewSet(mixins.ListModelMixin,
         return obj
 
     def list(self, request, *args, **kwargs):
-        """ Listar facturas
+        queryset = self.filter_queryset(self.get_queryset())
 
-            Permite listar todos los facturas registradas en el sistema.
-        """
-        return super().list(request, *args, **kwargs)
+
+        print('** desde aca:  ', queryset.query)
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         """ Consultar factura por ID
