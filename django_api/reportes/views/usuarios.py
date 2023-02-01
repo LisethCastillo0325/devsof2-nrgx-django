@@ -37,7 +37,7 @@ class ReporteUsuariosViewSet(GenericViewSet):
 
         sq_rol_usuario = User.objects.values('groups__name').annotate(
             list_rol=StringAgg('groups__name', delimiter=', ')
-        ).filter(id=OuterRef('id')) # OuterRef('id')
+        ).filter(id=OuterRef('id'))
 
         x = User.objects.annotate(
             nombre_completo=Concat('first_name', Value(' '), 'last_name'),
