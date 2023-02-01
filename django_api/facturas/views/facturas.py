@@ -70,6 +70,10 @@ class FacturasViewSet(mixins.ListModelMixin,
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
+        """ Crear factura para un contrato
+
+            Dado un contrato se crea su factura respectiva.
+        """
         serializer = facturas_serialisers.AddFacturaSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # Crear factura al contrato
@@ -79,9 +83,13 @@ class FacturasViewSet(mixins.ListModelMixin,
         data = facturas_serialisers.FacturasModelSerializer(instance=factura).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
+    @transaction.atomic
     @action(detail=False, methods=['GET'])
     def crear_facturas_contratos(self, request, *args, **kwargs):
-        # Crear factura a cada contrato activo
+        """ Crear factura a todos los contratos 
+
+            Por cada contrato se crea su respectiva factura.
+        """
         service = FacturaServices()
         facturas = service.crear_facturas_contratos()
 
@@ -105,6 +113,11 @@ class FacturasViewSet(mixins.ListModelMixin,
 
     @action(detail=True, methods=['GET'])
     def descargar(self, request, *args, **kwargs):
+        """ Descargar Factura PDF
+
+            Dado un ID de factura permite descargar su representación en PDF.
+        """
+
         instance = self.get_object()
         data = self.get_serializer(instance=instance).data
 

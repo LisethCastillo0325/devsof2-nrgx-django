@@ -1,1 +1,2 @@
 from .clientes import ReportesClientesViewSet
+from .usuarios import ReporteUsuariosViewSet
