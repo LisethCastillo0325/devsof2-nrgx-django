@@ -51,6 +51,10 @@ Ejecutar proyecto
 
     docker-compose -f local-db.yml up
 
+Ejecutar pruebas
+
+    docker compose -f local-db.yml run --rm django pytest
+
 
 ### En el ambiente Producción
 

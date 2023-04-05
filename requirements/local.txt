@@ -1,3 +1,8 @@
 -r ./base.txt
 
+# Testing
 
+pytest==7.2.2
+pytest-sugar==0.9.6
+pytest-django==4.5.2
+Faker==18.3.4
