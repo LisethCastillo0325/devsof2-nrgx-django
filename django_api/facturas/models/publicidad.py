@@ -1,5 +1,29 @@
 """Publicidad model."""
 
+
+"""
+El código define un modelo de Django llamado "Publicidad". La clase "Publicidad" hereda de la clase 
+"DateBaseModel" que proporciona campos adicionales como fecha de creación y modificación.
+
+El modelo "Publicidad" tiene los siguientes campos:
+
+"nombre": un campo de texto opcional para el nombre de la publicidad.
+"fecha_vigencia_inicio": fecha y hora de inicio de la vigencia de la publicidad.
+"fecha_vigencia_fin": fecha y hora de finalización de la vigencia de la publicidad.
+"valor": valor pagado por la publicidad.
+"imagen": imagen de la publicidad que se almacena en el sistema de archivos del servidor en la ubicación
+ especificada.
+"seccion_factura": una opción para la sección de la factura en la que aparecerá la publicidad.
+"is_active": un campo booleano que indica si la publicidad está activa o no.
+El campo "seccion_factura" utiliza la clase "SeccionFacturaChoices" para definir las opciones de 
+selección disponibles. Las opciones son 'A', 'B', 'C' y 'OTRO'. El campo "is_active" tiene un valor 
+predeterminado de "True" para indicar que la publicidad está activa.
+
+Además, el modelo tiene un método "str" que devuelve el nombre del modelo y su ID para una representación
+ legible del modelo. La clase "Meta" se utiliza para proporcionar metadatos del modelo, como el nombre
+de la tabla y el nombre en singular y plural.
+
+"""
 # Django
 from django.db import models
 
