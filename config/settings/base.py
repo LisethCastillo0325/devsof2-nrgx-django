@@ -13,6 +13,9 @@ import environ
 import os
 from pathlib import Path
 
+# permite que la importación se haga usando transacciones de la base de datos.
+IMPORT_EXPORT_USE_TRANSACTIONS = True 
+
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('django_api')
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
