@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models.facturas import Facturas, DetalleFactura, ConfiguracionesFacturacion
 from .models.publicidad import Publicidad
+from .models.facturas_pagos import PagosFactura
 
 
 class FacturasAdmin(admin.ModelAdmin):
@@ -30,3 +31,4 @@ admin.site.register(Facturas, FacturasAdmin)
 admin.site.register(DetalleFactura, DetalleFacturaAdmin)
 admin.site.register(Publicidad, PublicidadAdmin)
 admin.site.register(ConfiguracionesFacturacion)
+admin.site.register(PagosFactura)

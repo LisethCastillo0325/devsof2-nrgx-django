@@ -64,6 +64,6 @@ class AddFacturaSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         service = FacturaServices()
-        factura = service.crear_factura(contrato_id=validated_data['contrato'])
+        factura = service.crear_factura(contrato_id=validated_data['contrato'].id)
 
         return factura

@@ -42,3 +42,10 @@ class AddPagoFacturaSerializer(serializers.Serializer):
         # )
 
         return pago
+
+
+class AddPagoFacturaBancosSerializer(AddPagoFacturaSerializer):
+    # Se pide como obligatorio el banco
+    banco = serializers.PrimaryKeyRelatedField(
+        queryset=Bancos.objects.all(), required=True
+    )
