@@ -16,4 +16,4 @@ class Bancos(DateBaseModel):
         db_table = 'bancos'
         managed = True
         verbose_name = 'banco'
-        verbose_name_plural = 'Bancos natha'
+        verbose_name_plural = 'Bancos'

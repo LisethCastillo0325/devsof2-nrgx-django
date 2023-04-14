@@ -17,6 +17,7 @@ router.register(
     views.ConfiguracionesFacturacionViewSet, 
     basename='configuraciones_facturacion'
 )
+router.register(r'facturas/pagos', views.PagosFacturasViewSet, basename='facturas-pagos')
 
 urlpatterns = [
     path('', include(router.urls)),
