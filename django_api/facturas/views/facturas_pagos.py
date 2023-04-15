@@ -51,7 +51,9 @@ class PagosFacturasViewSet(viewsets.GenericViewSet):
         return Response(data={"detail": "Pagos creados."}, status=status.HTTP_201_CREATED) 
 
     def create(self, request, *args, **kwargs):
-        serializer = facturas_pagos.AddPagoFacturaSerializer(data=request.data)
+        pago = request.data.copy()
+        pago['user'] = request.user.id  # ID de usuario de sesión
+        serializer = facturas_pagos.AddPagoFacturaSerializer(data=pago)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
