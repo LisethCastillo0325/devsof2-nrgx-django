@@ -186,3 +186,6 @@ ADMINS = [
     ("""Liseth Castillo Quiñones""", 'liseth.castillo@correounivalle.edu.co'),
 ]
 MANAGERS = ADMINS
+
+# fixture
+FIXTURE_DIRS = ['fixtures']
