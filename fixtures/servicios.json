@@ -1,0 +1,4 @@
+[
+    {"model": "servicios.Servicios", "pk": 1, "fields": {"nombre": "ENERGÍA ELÉCTRICA", "descripcion": "Servicio de energía eléctrica.", "unidad_medida": 1, "valor_unitario": 120, "porcentaje_recargo_mora": 2, "is_active": true, "created": "2023-04-15", "updated": "2023-04-15"}},
+    {"model": "servicios.Servicios", "pk": 2, "fields": {"nombre": "ACUEDUCTO", "descripcion": "Servicio de acueducto.", "unidad_medida": 2, "valor_unitario": 125, "porcentaje_recargo_mora": 1.5, "is_active": true, "created": "2023-04-15", "updated": "2023-04-15"}}
+]

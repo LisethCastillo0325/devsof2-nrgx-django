@@ -1,0 +1,3 @@
+[
+    {"model": "facturas.ConfiguracionesFacturacion", "pk": 1, "fields": {"dia_de_corte": 30, "porcentaje_recargo_mora": 2, "created": "2023-04-15", "updated": "2023-04-15"}}
+]
