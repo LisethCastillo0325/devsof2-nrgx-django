@@ -3,7 +3,7 @@ name: Test APP
 on:
   push:
     branches: 
-      - 42-github-actions-test
+      - "42-github-actions-test"
 
 jobs:
   test:
