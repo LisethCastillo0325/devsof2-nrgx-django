@@ -32,14 +32,8 @@ class AddPagoFacturaSerializer(serializers.Serializer):
             **validated_data
         )
 
-        # agregar logica adicional o necesaria
-
-        # es similar a hacer esto
-        # pago = PagosFactura.objects.create(
-        #     factura=validated_data['factura'],
-        #     user=validated_data['user'],
-        #     total_pago=validated_data['total_pago'],
-        # )
+        factura = Facturas.objects.filter(id = pago.factura_id)
+        factura.update(estado = Facturas.EstadoChoices.PAGADA)
 
         return pago
 
