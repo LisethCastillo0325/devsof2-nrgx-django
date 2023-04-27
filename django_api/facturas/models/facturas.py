@@ -1,5 +1,28 @@
 """Factura model."""
 
+
+""" 
+
+Este código define tres modelos de Django para la gestión de facturas y detalles de facturas, junto con 
+la configuración de facturación en un sistema.
+
+El primer modelo, Facturas, representa una factura emitida para un contrato específico y contiene 
+información como la fecha de expedición, la fecha de vencimiento, el número de pago electrónico, el 
+estado actual de la factura (pagada, pendiente o inactiva), y los valores pendientes de pago y de 
+recargo, si los hay.
+
+El segundo modelo, DetalleFactura, representa los detalles específicos de una factura, como el servicio
+ que se está facturando, la lectura anterior y actual del servicio, el consumo actual, el valor unitario
+   del servicio, los cargos por recargo y el total a pagar por este detalle de factura.
+
+El tercer modelo, ConfiguracionesFacturacion, contiene la información de configuración de la facturación,
+ como el día de corte y el porcentaje de recargo por mora general que se aplicará en el sistema.
+
+Todos los modelos heredan de la clase DateBaseModel, que proporciona campos de fecha y hora 
+estandarizados para la creación y actualización de objetos. Además, el modelo Facturas utiliza la clase 
+EstadoChoices para proporcionar opciones de estado predefinidas para las facturas.
+
+"""
 # Django
 from django.db import models
 from django.utils.translation import gettext_lazy as _

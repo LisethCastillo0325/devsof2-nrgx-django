@@ -1,6 +1,36 @@
 """Contratos Model"""
 
 # Django
+
+#Este código define un modelo de Django llamado "Contratos" que hereda 
+# de una clase personalizada llamada "DateBaseModel". Esta clase se importa
+# desde "django_api.utils.models" y proporciona campos de fecha y hora "created"
+#  y "modified" para el modelo.
+# 
+# El modelo "Contratos" tiene los siguientes campos:
+# 
+# cliente: un campo de clave externa que se relaciona con el modelo "User".
+# direccion_instalacion: un campo de texto que almacena la dirección de instalación.
+# latitud: un campo decimal que almacena la latitud de la dirección de instalación.
+# longitud: un campo decimal que almacena la longitud de la dirección de instalación.
+# ciudad: un campo de clave externa que se relaciona con el modelo "Ciudades".
+# tipo_de_uso: un campo de opción que indica si el contrato es para uso residencial o comercial.
+# estrato: un campo entero que indica el estrato socioeconómico del cliente.
+# estado: un campo de opción que indica si el contrato está activo, inactivo o suspendido.
+# estado_de_pago: un campo de opción que indica si el contrato está al día o en mora.
+# servicios: un campo ManyToMany que se relaciona con el modelo "Servicios".
+# fecha_instalacion: un campo de fecha y hora que almacena la fecha y hora de la instalación.
+
+#Y además, define tres clases anidadas:
+
+#TipoDeUsoChoices: una clase que define las opciones de uso del contrato (residencial o comercial).
+#EstadoChoices: una clase que define las opciones de estado del contrato (activo, inactivo o suspendido).
+#EstadoDePago: una clase que define las opciones de estado de pago del contrato (al día o en mora).
+#Finalmente, el modelo define un método "str" que devuelve una cadena que representa el objeto 
+# "Contratos" y una clase "Meta" que define varios metadatos, como el nombre de la tabla de la base de
+#  datos, si el modelo es gestionado por Django y los nombres plurales y singulares para el modelo en 
+# la interfaz de administración de Django.
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 

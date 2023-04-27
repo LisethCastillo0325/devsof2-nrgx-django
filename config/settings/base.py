@@ -78,7 +78,8 @@ LOCAL_APPS = [
     'django_api.servicios.apps.ServicioAppConfig',
     'django_api.contratos.apps.ContratoAppConfig',
     'django_api.facturas.apps.FacturaAppConfig',
-    'django_api.reportes.apps.ReportesAppConfig'
+    'django_api.reportes.apps.ReportesAppConfig',
+    'django_api.bancos.apps.BancosAppConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

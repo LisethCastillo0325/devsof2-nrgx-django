@@ -12,6 +12,9 @@ from django_api.contratos.serializers.contratos import ContratosModelSerializer
 from django_api.utils.serializers import  DataChoiceSerializer
 from django_api.servicios.serializers import ServicioModelSerializer
 
+# Services
+from django_api.facturas.services.factura import FacturaServices
+
 
 class DetalleFacturaModelSerializer(serializers.ModelSerializer):
     servicio = ServicioModelSerializer()
@@ -57,3 +60,10 @@ class FacturasModelSerializer(serializers.ModelSerializer):
 class AddFacturaSerializer(serializers.Serializer):
     contrato = serializers.PrimaryKeyRelatedField(
         queryset=Contratos.objects.filter(estado=Contratos.EstadoChoices.ACTIVO).all())
+
+
+    def create(self, validated_data):
+        service = FacturaServices()
+        factura = service.crear_factura(contrato_id=validated_data['contrato'].id)
+
+        return factura

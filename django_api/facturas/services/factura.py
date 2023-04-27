@@ -1,6 +1,7 @@
 import requests
 import json
 import random
+import math
 
 # Date
 from datetime import timedelta
@@ -174,23 +175,24 @@ class FacturaServices:
             return detalle_anterior.lectura_actual
 
     def get_lectura_actual_servicio(self, factura: Facturas, servicio: Servicios):
-        url = "https://energy-service-ds-v3cot.ondigitalocean.app/consumption"
-        payload = json.dumps({
-            "client_id": factura.contrato.cliente.identification_number
-        })
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        response = requests.post(url, headers=headers, json=payload)
-        data = json.loads(response.text)
+        # url = "https://energy-service-ds-v3cot.ondigitalocean.app/consumption"
+        # payload = json.dumps({
+        #     "client_id": factura.contrato.cliente.identification_number
+        # })
+        # headers = {
+        #     'Content-Type': 'application/json'
+        # }
+        # response = requests.post(url, headers=headers, json=payload)
+        # data = json.loads(response.text)
 
         try:
-            lectura = data['energy consumption']
+            # lectura = data['energy consumption']
+            lectura = random.randint(30, 150)
         except Exception:
             lectura = 0
 
-        # Log Consumo
-        self.__save_log_consumo_servicio(factura, servicio, lectura, payload, response)
+        # # Log Consumo
+        # self.__save_log_consumo_servicio(factura, servicio, lectura, payload, response)
 
         return lectura
 

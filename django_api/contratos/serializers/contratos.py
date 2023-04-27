@@ -1,4 +1,22 @@
+
+
 """Contratos serializers """
+
+""" Este código define tres clases de serializadores para el modelo de Django "Contratos":
+
+ContratosSerializer: serializador que muestra datos simplificados del contrato, incluyendo información 
+del cliente, ciudad, tipo de uso, estrato, estado y estado de pago. Utiliza otros serializadores para 
+mostrar información detallada del cliente, ciudad y elecciones de campos de texto.
+
+ContratosModelSerializer: serializador que muestra todos los campos del modelo de Contratos. Además de 
+los campos que muestra ContratosSerializer, también incluye la relación muchos a muchos con el modelo 
+de Servicios y todos los campos de fecha y hora.
+
+UpdateAndCreatedContratoSerializer: serializador que permite crear y actualizar instancias del modelo 
+de Contratos. Además de todos los campos del modelo, también requiere un ID de cliente y un valor de 
+estrato. El ID de cliente debe ser una clave externa a la tabla "User" con un grupo "CLIENTE", y el 
+valor de estrato debe estar entre 1 y 6. Este serializador define las funciones create() y update() 
+para procesar los datos validados y crear o actualizar instancias de Contratos según sea necesario."""
 
 # Django REST Framework
 from rest_framework import serializers

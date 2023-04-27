@@ -25,9 +25,6 @@ from ..serializers import facturas as facturas_serialisers
 # Views
 from django_api.utils.views.documentos import DocumentosView
 
-# Services
-from ..services.factura import FacturaServices
-
 
 class FacturasViewSet(mixins.ListModelMixin,
                       mixins.RetrieveModelMixin,
@@ -77,9 +74,8 @@ class FacturasViewSet(mixins.ListModelMixin,
         serializer = facturas_serialisers.AddFacturaSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # Crear factura al contrato
-        service = FacturaServices()
-        factura = service.crear_factura(contrato_id=serializer.data['contrato'])
-    
+        factura = serializer.save()
+        
         data = facturas_serialisers.FacturasModelSerializer(instance=factura).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
