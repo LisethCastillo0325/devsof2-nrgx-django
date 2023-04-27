@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - "42-github-actions-test"
+      - "main"
 
 jobs:
   test:
