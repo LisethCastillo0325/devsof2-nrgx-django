@@ -71,7 +71,7 @@ docker-compose -f local-db-production.yml run --rm django python manage.py colle
 Crear entorno vitual
 
 ```
-virtualenv django_api
+python3 -m venv django_api
 source django_api/bin/activate
 ```
 
@@ -86,3 +86,7 @@ Migrar librerías a un archivo
 Instalar librerías desde un archivo
 
     pip install -r requirements.txt
+
+Ejecutar proyecto
+
+    python3 manage.py runserver
