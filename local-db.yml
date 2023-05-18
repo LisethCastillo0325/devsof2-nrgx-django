@@ -38,34 +38,37 @@ services:
     ports:
       - 8080:8080
 
-  # redis:
-  #   image: "redis:latest"
-  #   sysctls:
-  #     net.core.somaxconn: '511'
-  #   volumes:
-  #     - "/etc/localtime:/etc/localtime:ro"
-  #     - "/etc/timezone:/etc/timezone:ro"
-  #     - ./redis.conf:/usr/local/etc/redis/redis.conf
+  redis:
+    image: "redis:latest"
+    sysctls:
+      net.core.somaxconn: '511'
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
 
-  # celeryworker:
-  #   <<: *django
-  #   image: devsof_local_celeryworker
-  #   depends_on:
-  #     - redis
-  #   ports: []
-  #   command: /start-celeryworker
+  celeryworker:
+    <<: *django
+    image: devsof_local_celeryworker
+    depends_on:
+      - redis
+    ports: []
+    command: /start-celeryworker
 
-  # celerybeat:
-  #   <<: *django
-  #   image: devsof_local_celerybeat
-  #   depends_on:
-  #     - redis
-  #   ports: []
-  #   command: /start-celerybeat
+  celerybeat:
+    <<: *django
+    image: devsof_local_celerybeat
+    depends_on:
+      - redis
+    ports: []
+    command: /start-celerybeat
 
-  # flower:
-  #   <<: *django
-  #   image: devsof_local_flower
-  #   ports:
-  #     - "5555:5555"
-  #   command: /start-flower
+  flower:
+    <<: *django
+    image: devsof_local_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+    depends_on:
+      - redis
+      - celeryworker
+

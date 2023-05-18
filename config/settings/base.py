@@ -190,3 +190,10 @@ MANAGERS = ADMINS
 
 # fixture
 FIXTURE_DIRS = ['fixtures']
+
+# Celery
+INSTALLED_APPS += ['django_api.taskapp.apps.CeleryAppConfig']
+CELERY_BROKER_URL = env('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
