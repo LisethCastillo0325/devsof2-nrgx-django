@@ -4,7 +4,7 @@
 from rest_framework import serializers
 
 # Models
-from ..models.publicidad import Publicidad
+from ..models.publicidad import Publicidad, SeccionFactura
 
 
 class PublicidadModelSerializer(serializers.ModelSerializer):
@@ -31,3 +31,27 @@ class UpdateAndCreatedPublicidadSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+    
+
+class SeccionFacturaModelSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SeccionFactura
+        fields = ('__all__')
+
+
+class UpdateAndCreatedSeccionFacturaSerializer(serializers.ModelSerializer):
+    seccion_factura = serializers.ChoiceField(
+        choices=Publicidad.SeccionFacturaChoices.choices
+    )
+
+    class Meta:
+        model = SeccionFactura
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+    

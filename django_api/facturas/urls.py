@@ -18,6 +18,7 @@ router.register(
     basename='configuraciones_facturacion'
 )
 router.register(r'facturas-pagos', views.PagosFacturasViewSet, basename='facturas-pagos')
+router.register(r'seccion-factura', views.SeccionFacturaViewSet, basename='seccion-factura')
 
 urlpatterns = [
     path('', include(router.urls)),

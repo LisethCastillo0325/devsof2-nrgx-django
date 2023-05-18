@@ -2,3 +2,4 @@ from .facturas import FacturasViewSet
 from .publicidad import PublicidadViewSet
 from .configuraciones_factura import ConfiguracionesFacturacionViewSet
 from .facturas_pagos import PagosFacturasViewSet
+from .seccion_factura import SeccionFacturaViewSet
