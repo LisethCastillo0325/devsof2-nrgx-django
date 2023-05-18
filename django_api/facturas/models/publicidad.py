@@ -44,7 +44,7 @@ class SeccionFactura(DateBaseModel):
         choices=SeccionFacturaChoices.choices,
         max_length=4
     )
-    valor = models.FloatField('Valor', help_text="Valor definido para la sección.", default=0)
+    valor = models.FloatField('Valor', help_text="Valor definido para la sección.")
 
     def __str__(self):
         return "SeccionFactura {}".format(self.id)
