@@ -30,6 +30,32 @@ from django.db import models
 # Utilities
 from django_api.utils.models import DateBaseModel
 
+
+class SeccionFactura(DateBaseModel):
+
+    class SeccionFacturaChoices(models.TextChoices):
+        SECCION_A = 'A'
+        SECCION_B = 'B'
+        SECCION_C = 'C'
+        OTRO = 'OTRO'
+
+    seccion_factura = models.CharField(
+        'Seccion Factura',
+        choices=SeccionFacturaChoices.choices,
+        max_length=4
+    )
+    valor = models.FloatField('Valor', help_text="Valor definido para la sección.", default=0)
+
+    def __str__(self):
+        return "SeccionFactura {}".format(self.id)
+
+    class Meta(DateBaseModel.Meta):
+        db_table = 'seccion_factura'
+        managed = True
+        verbose_name = 'seccion_factura'
+        verbose_name_plural = 'secciones de factura'
+
+
 class Publicidad(DateBaseModel):
     
     class SeccionFacturaChoices(models.TextChoices):
@@ -50,6 +76,7 @@ class Publicidad(DateBaseModel):
         default=SeccionFacturaChoices.SECCION_A
     )
     is_active = models.BooleanField('Estado', default=True)
+    seccionfactura = models.ForeignKey(SeccionFactura, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return "Publicidad {}".format(self.id)
@@ -59,3 +86,5 @@ class Publicidad(DateBaseModel):
         managed = True
         verbose_name = 'publicidad'
         verbose_name_plural = 'publicidades'
+
+
