@@ -74,7 +74,7 @@ class FacturaServices:
             'fecha_expedicion': hoy,
             'fecha_vencimiento': fecha_vencimiento,
             'estado': Facturas.EstadoChoices.PENDIENTE,
-            'numero_pago_electronico': self.__get_numero_pago_electronico(),
+            'numero_pago_electronico': self.get_numero_pago_electronico(),
             'valor_pendiente_pago': valor_pendiente_pago,
             'is_recargo': (True if cantidad_facturas >= 2 else False)
         }
@@ -105,7 +105,7 @@ class FacturaServices:
         
         return DetalleFactura.objects.create(**data)
 
-    def __get_numero_pago_electronico(self):
+    def get_numero_pago_electronico(self):
         numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
         # Barajar números
         random.shuffle(numeros)
