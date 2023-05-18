@@ -7,6 +7,7 @@ def poblar_datos_bd():
     call_command('loaddata', 'fixtures/roles.json')
     call_command('loaddata', 'fixtures/servicios.json')
     call_command('loaddata', 'fixtures/configuraciones_facturacion.json')
+    call_command('loaddata', 'fixtures/bancos.json')
 
 def run():
     print(">>> Inició creacion de datos en la BD...")
