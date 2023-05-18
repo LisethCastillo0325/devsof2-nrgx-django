@@ -5,4 +5,4 @@ set -o nounset
 
 
 rm -f './celerybeat.pid'
-celery -A cride.taskapp beat -l INFO
+celery -A django_api.taskapp beat -l INFO

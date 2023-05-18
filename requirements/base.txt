@@ -28,3 +28,8 @@ pandas==1.5.3
 numpy==1.24.0
 django-pandas==0.6.6
 XlsxWriter==3.0.7
+
+# Celery
+celery==5.2.7
+flower==1.2.0
+redis==4.5.5
