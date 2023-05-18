@@ -25,6 +25,9 @@ from ..serializers import facturas as facturas_serialisers
 # Views
 from django_api.utils.views.documentos import DocumentosView
 
+# Service
+from django_api.facturas.services.factura import FacturaServices
+
 
 class FacturasViewSet(mixins.ListModelMixin,
                       mixins.RetrieveModelMixin,
