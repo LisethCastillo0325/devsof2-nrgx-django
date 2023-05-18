@@ -13,7 +13,7 @@ class PagosFactura(DateBaseModel):
         VIRTUAL = 3, _('VIRTUAL')
 
     factura = models.ForeignKey('facturas.Facturas', on_delete=models.CASCADE)
-    banco = models.ForeignKey('bancos.Bancos', on_delete=models.CASCADE)
+    banco = models.ForeignKey('bancos.Bancos', on_delete=models.CASCADE, null=True)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     forma_pago = models.CharField('Forma de pago', choices=FormaPagoChoices.choices, max_length=1)
     total_pago = models.FloatField('Total de pago')
