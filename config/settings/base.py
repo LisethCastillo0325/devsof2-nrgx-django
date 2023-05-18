@@ -140,7 +140,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # DATABASES
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': env.db('DATABASE_URL', "postgresql://postgres:lzJI310Zs9DC7NyRYBb9@containers-us-west-73.railway.app:5570/railway"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = False
 
