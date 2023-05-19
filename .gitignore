@@ -279,3 +279,5 @@ media/
 !.envs/.local/
 
 /db-data
+
+.scannerwork/
