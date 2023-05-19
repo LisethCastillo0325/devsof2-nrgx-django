@@ -7,7 +7,6 @@ from .base import env
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[
     "localhost",
-    "3.20.82.253",
     "nrgx.tortascrispan.com"
 ])
 PRODUCTION = True
