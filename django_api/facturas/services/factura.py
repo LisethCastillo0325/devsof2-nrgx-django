@@ -8,8 +8,9 @@ from datetime import timedelta
 
 # Django
 from django.utils import timezone
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.core import exceptions
+
 
 # Models
 from ..models.facturas import Facturas, DetalleFactura, ConfiguracionesFacturacion
@@ -17,7 +18,7 @@ from django_api.contratos.models.contratos import Contratos
 from django_api.servicios.models.servicios import Servicios, LogConsumoServicios
 
 # Utils
-from django_api.utils.exceptions import CustomValidationAPIException
+from django_api.utils.exceptions import CustomValidationAPIException, FacturaExistenteAPIException
 
 
 class FacturaServices:
@@ -33,7 +34,10 @@ class FacturaServices:
         facturas = []
         # Crear factura por cada contrato
         for contrato_id in contratos:
-            facturas.append(self.crear_factura(contrato_id))
+            try:
+                facturas.append(self.crear_factura(contrato_id))
+            except FacturaExistenteAPIException:
+                pass
 
         return facturas
 
@@ -41,6 +45,9 @@ class FacturaServices:
         
         # Validación de día de cortte
         self.__validacion_dia_de_corte()
+
+        # Validación factura ya existente
+        self.__validacion_factura_existente(contrato_id)
 
         valor_recargo = 0
         total_a_pagar = 0
@@ -223,3 +230,12 @@ class FacturaServices:
         if int(dia_hoy) != int(dia_de_corte):
             raise CustomValidationAPIException({
                 'detail': f'El día de corte para la facturación es el día {dia_de_corte} de cada mes.'})
+        
+    def __validacion_factura_existente(self, contrato_id):
+        hoy = timezone.now()
+        factura = Facturas.objects.filter(
+            Q(contrato_id=contrato_id), 
+            Q(fecha_expedicion__year=hoy.year) & Q(fecha_expedicion__month=hoy.month)).first()
+        
+        if factura:
+            raise FacturaExistenteAPIException({'detail': 'Ya existe una factura creada para este mes.'})

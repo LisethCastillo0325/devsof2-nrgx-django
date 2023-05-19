@@ -65,7 +65,7 @@ class Contratos(DateBaseModel):
         default=TipoDeUsoChoices.RECIDENCIAL
     )
     estrato = models.IntegerField('Estrato socioeconomico')
-    estado = models.CharField('Estado', choices=EstadoChoices.choices, default=EstadoChoices.INACTIVO, max_length=1)
+    estado = models.CharField('Estado', choices=EstadoChoices.choices, default=EstadoChoices.ACTIVO, max_length=1)
     estado_de_pago = models.CharField('Estado de pago', choices=EstadoDePago.choices, max_length=1, null=True)
     servicios = models.ManyToManyField('servicios.Servicios', related_name='servicios_contrato')
     fecha_instalacion = models.DateTimeField('Fecha de instalación', help_text="Fecha y hora de instalación")
