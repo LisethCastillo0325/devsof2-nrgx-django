@@ -21,3 +21,7 @@ class CustomValidationAPIException(exceptions.APIException):
 class NoExpectedResultException(Exception):
     """ Excepcion para indicar que una solicitud no retornó el resultado esperado. """
     pass
+
+
+class FacturaExistenteAPIException(CustomValidationAPIException):
+    pass
