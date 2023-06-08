@@ -37,6 +37,8 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+        with:
+          file: compose/local/django/Dockerfile
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
