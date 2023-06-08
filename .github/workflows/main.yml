@@ -11,7 +11,7 @@ env:
   IMAGE_NAME: devsof2-nrgx-backend
 
 jobs:
-  test:
+  # test:
     # runs-on: ubuntu-latest
     # steps:
     # - name: Checkout code
@@ -30,6 +30,7 @@ jobs:
   trivy-security:
     name: Build
     runs-on: ubuntu-latest
+    # needs: test
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
