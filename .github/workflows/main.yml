@@ -17,14 +17,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build containers
-      run:  docker-compose -f local-db.yml up --build -d
+    # - name: Build containers
+    #   run:  docker-compose -f local-db.yml up --build -d
 
     - name: Run Tests
       run: docker-compose -f local-db.yml run --rm django pytest
 
-    - name: Stop containers
-      run: docker-compose -f local-db.yml down
+    # - name: Stop containers
+    #   run: docker-compose -f local-db.yml down
 
   build-docker:
     runs-on: ubuntu-latest
