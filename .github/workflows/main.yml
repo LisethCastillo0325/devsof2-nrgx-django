@@ -11,42 +11,42 @@ env:
   IMAGE_NAME: devsof2-nrgx-backend
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   - name: Run Tests
-  #     run: docker-compose -f local-db.yml run --rm django pytest
+    - name: Run Tests
+      run: docker-compose -f local-db.yml run --rm django pytest
 
-  # build-and-push-docker-image:
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   steps:
-  #     -
-  #       name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v2
-  #     -
-  #       name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
-  #     -
-  #       name: Login to Docker Hub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-  #     -
-  #       name: Build and push
-  #       uses: docker/build-push-action@v4
-  #       with:
-  #         push: true
-  #         tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-  #         file: compose/local/django/Dockerfile
+  build-and-push-docker-image:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          file: compose/local/django/Dockerfile
 
   deploy-ec2:
     runs-on: ubuntu-latest
-    # needs: build-and-push-docker-image
+    needs: build-and-push-docker-image
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
