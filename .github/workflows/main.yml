@@ -65,7 +65,7 @@ jobs:
 
       - name: Connect to EC2 and execute commands
         run: |
-          ssh -i ~/.ssh/id_rsa "${{ secrets.USER_REMOTE }}"@"${{ secrets.IP_REMOTE }}" "docker pull zethoc/devsof2-nrgx-backend && docker stop $(docker ps -q) && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
+          ssh -i ~/.ssh/id_rsa "${{ secrets.USER_REMOTE }}"@"${{ secrets.IP_REMOTE }}" "docker pull zethoc/devsof2-nrgx-backend && docker stop devsof2 && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
   
   # deploy-aws-ec2:
   #   runs-on: ubuntu-latest
