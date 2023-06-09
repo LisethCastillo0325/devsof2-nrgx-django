@@ -60,6 +60,9 @@ RUN apt-get -y install zlib1g fontconfig libxrender1 libfreetype6 libxext6 libx1
 
 WORKDIR /app
 
+# Copiar el código fuente de la aplicación
+COPY . .
+
 ENTRYPOINT ["/entrypoint"]
 
 # Puerto expuesto por el contenedor
