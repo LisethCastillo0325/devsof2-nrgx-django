@@ -53,17 +53,11 @@ jobs:
 
       - name: Execute Script
         run: |
-          echo "Before script...."
-          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-          eval $(ssh-agent -s)
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
-          mkdir -p ~/.ssh
-          '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-          echo "Before script end...."
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
 
       - name: Connect to EC2 and execute commands
         run: |
-          ssh ${{ secrets.USER_REMOTE }}@${{ secrets.IP_REMOTE }} "docker pull zethoc/devsof2-nrgx-backend && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
+          ssh -i ~/.ssh/id_rsa ${{ secrets.USER_REMOTE }}@${{ secrets.IP_REMOTE }} "docker pull zethoc/devsof2-nrgx-backend && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
   
   # deploy-aws-ec2:
   #   runs-on: ubuntu-latest
