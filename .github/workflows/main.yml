@@ -51,26 +51,26 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: compose/local/django/Dockerfile
 
-  deploy-aws:
-    runs-on: ubuntu-latest
-    steps:
+  # deploy-aws:
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-    - name: Checkout source code
-      uses: actions/checkout@v2
+  #   - name: Checkout source code
+  #     uses: actions/checkout@v2
 
-    - name: Copy Dockerfile to application directory
-      run: cp compose/local/django/Dockerfile .
+  #   - name: Copy Dockerfile to application directory
+  #     run: cp compose/local/django/Dockerfile .
 
-    - name: Generate deployment package
-      run: zip -r deploy.zip . -x '*.git*'
+  #   - name: Generate deployment package
+  #     run: zip -r deploy.zip . -x '*.git*'
 
-    - name: Deploy to EB
-      uses: einaregilsson/beanstalk-deploy@v21
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: devsoft-nrgx-backend
-        environment_name: Devsoft-nrgx-backend-env
-        version_label: ${{ github.sha }}
-        region: ${{ secrets.AWS_REGION }}
-        deployment_package: deploy.zip
+  #   - name: Deploy to EB
+  #     uses: einaregilsson/beanstalk-deploy@v21
+  #     with:
+  #       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       application_name: devsoft-nrgx-backend
+  #       environment_name: Devsoft-nrgx-backend-env
+  #       version_label: ${{ github.sha }}
+  #       region: ${{ secrets.AWS_REGION }}
+  #       deployment_package: deploy.zip
