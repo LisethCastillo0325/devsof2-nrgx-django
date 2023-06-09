@@ -61,3 +61,8 @@ RUN apt-get -y install zlib1g fontconfig libxrender1 libfreetype6 libxext6 libx1
 WORKDIR /app
 
 ENTRYPOINT ["/entrypoint"]
+
+# Puerto expuesto por el contenedor
+EXPOSE 8000
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
