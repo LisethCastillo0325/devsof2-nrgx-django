@@ -51,10 +51,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Execute Script
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+      - name: Create SSH directory
+        run: mkdir -p ~/.ssh
+
+      - name: Save SSH private key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+
+      - name: Set permissions for SSH private key
+        run: chmod 600 ~/.ssh/id_rsa
 
       - name: Connect to EC2 and execute commands
         run: |
