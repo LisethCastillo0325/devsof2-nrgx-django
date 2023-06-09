@@ -11,25 +11,18 @@ env:
   IMAGE_NAME: devsof2-nrgx-backend
 
 jobs:
-  # test:
-    # runs-on: ubuntu-latest
-    # steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    # # - name: Build containers
-    # #   run:  docker-compose -f local-db.yml up --build -d
-
-    # - name: Run Tests
-    #   run: docker-compose -f local-db.yml run --rm django pytest
-
-    # # - name: Stop containers
-    # #   run: docker-compose -f local-db.yml down
-
+    - name: Run Tests
+      run: docker-compose -f local-db.yml run --rm django pytest
 
   build-and-push-docker-image:
     runs-on: ubuntu-latest
-    # needs: test
+    needs: test
     steps:
       -
         name: Set up QEMU
