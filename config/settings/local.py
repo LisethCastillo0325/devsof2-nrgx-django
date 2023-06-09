@@ -16,7 +16,8 @@ ALLOWED_HOSTS = [
     "0.0.0.0",
     "127.0.0.1",
     "nrgx.tortascrispan.com",
-    "api-nrgx.tortascrispan.com"
+    "api-nrgx.tortascrispan.com",
+    "34.203.83.254"
 ]
 
 CSRF_TRUSTED_ORIGINS = [

@@ -43,6 +43,17 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: compose/local/django/Dockerfile
+
+  deploy-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Connect to EC2 and execute commands
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@34.203.83.254 "docker pull zethoc/devsof2-nrgx-backend && docker container stop devsof2 && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
   
   # deploy-aws-ec2:
   #   runs-on: ubuntu-latest
