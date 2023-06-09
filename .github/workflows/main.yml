@@ -46,14 +46,24 @@ jobs:
 
   deploy-ec2:
     runs-on: ubuntu-latest
-
+    needs: build-and-push-docker-image:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Execute Script
+        run: |
+          echo "Before script...."
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+          eval $(ssh-agent -s)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+          mkdir -p ~/.ssh
+          '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+          echo "Before script end...."
+
       - name: Connect to EC2 and execute commands
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@34.203.83.254 "docker pull zethoc/devsof2-nrgx-backend && docker container stop devsof2 && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
+          ssh ${{ USER_REMOTE }}@${{ IP_REMOTE }} "docker pull zethoc/devsof2-nrgx-backend && docker container stop devsof2 && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
   
   # deploy-aws-ec2:
   #   runs-on: ubuntu-latest
