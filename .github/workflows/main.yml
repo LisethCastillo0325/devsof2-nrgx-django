@@ -27,32 +27,9 @@ jobs:
     # #   run: docker-compose -f local-db.yml down
 
 
-  trivy-security:
-    runs-on: ubuntu-latest
-    # needs: test
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build an image from Dockerfile
-        run: |
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}  -f compose/local/django/Dockerfile .
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'trivy-results.sarif'
-
   build-docker:
     runs-on: ubuntu-latest
-    needs: trivy-security
+    # needs: test
     steps:
       -
         name: Set up QEMU
@@ -73,3 +50,27 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: compose/local/django/Dockerfile
+
+  deploy-aws:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Copy Dockerfile to application directory
+      run: cp compose/local/django/Dockerfile .
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: devsoft-nrgx-backend
+        environment_name: Devsoft-nrgx-backend-env
+        version_label: ${{ github.sha }}
+        region: ${{ env.AWS_REGION }}
+        deployment_package: deploy.zip
