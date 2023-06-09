@@ -54,6 +54,7 @@ jobs:
       - name: Execute Script
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Connect to EC2 and execute commands
         run: |
