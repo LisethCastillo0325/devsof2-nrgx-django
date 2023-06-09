@@ -69,9 +69,8 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
         application_name: devsoft-nrgx-backend
         environment_name: Devsoft-nrgx-backend-env
         version_label: ${{ github.sha }}
-        region: ${{ env.AWS_REGION }}
+        region: ${{ secrets.AWS_REGION }}
         deployment_package: deploy.zip
