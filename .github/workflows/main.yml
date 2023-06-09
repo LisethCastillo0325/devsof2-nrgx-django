@@ -1,4 +1,4 @@
-name: Test APP
+name: CI/CD APP
 
 on:
   push:
@@ -51,16 +51,16 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: compose/local/django/Dockerfile
   
-  deploy-aws-ec2:
-    runs-on: ubuntu-latest
-    steps:
-      - id: deploy
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: ${{ secrets.AWS_REGION }}
-          dot_env: ${{ secrets.DOT_ENV }}
+  # deploy-aws-ec2:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - id: deploy
+  #       uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
+  #       with:
+  #         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws_default_region: ${{ secrets.AWS_REGION }}
+  #         dot_env: ${{ secrets.DOT_ENV }}
 
   # deploy-aws:
   #   runs-on: ubuntu-latest
