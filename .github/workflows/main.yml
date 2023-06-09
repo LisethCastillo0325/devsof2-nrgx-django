@@ -4,7 +4,6 @@ on:
   push:
     branches: 
       - "main"
-      - "42-github-actions-test"
 
 env:
   REGISTRY: zethoc
@@ -44,7 +43,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           file: compose/local/django/Dockerfile
 
-  deploy-ec2:
+  deploy-aws:
     runs-on: ubuntu-latest
     needs: build-and-push-docker-image
     steps:
@@ -67,37 +66,3 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa "${{ secrets.USER_REMOTE }}"@"${{ secrets.IP_REMOTE }}" "docker pull zethoc/devsof2-nrgx-backend && docker stop devsof2 && docker container run --rm -it --name devsof2 -p 8000:8000 --env-file .env -d zethoc/devsof2-nrgx-backend:latest && exit"
   
-  # deploy-aws-ec2:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - id: deploy
-  #       uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-  #       with:
-  #         aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws_default_region: ${{ secrets.AWS_REGION }}
-  #         dot_env: ${{ secrets.DOT_ENV }}
-
-  # deploy-aws:
-  #   runs-on: ubuntu-latest
-  #   steps:
-
-  #   - name: Checkout source code
-  #     uses: actions/checkout@v2
-
-  #   - name: Copy Dockerfile to application directory
-  #     run: cp compose/local/django/Dockerfile .
-
-  #   - name: Generate deployment package
-  #     run: zip -r deploy.zip . -x '*.git*'
-
-  #   - name: Deploy to EB
-  #     uses: einaregilsson/beanstalk-deploy@v21
-  #     with:
-  #       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       application_name: devsoft-nrgx-backend
-  #       environment_name: Devsoft-nrgx-backend-env
-  #       version_label: ${{ github.sha }}
-  #       region: ${{ secrets.AWS_REGION }}
-  #       deployment_package: deploy.zip
