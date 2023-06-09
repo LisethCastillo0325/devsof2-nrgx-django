@@ -61,7 +61,6 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_default_region: ${{ secrets.AWS_REGION }}
           dot_env: ${{ secrets.DOT_ENV }}
-          app_port: 8000
 
   # deploy-aws:
   #   runs-on: ubuntu-latest
